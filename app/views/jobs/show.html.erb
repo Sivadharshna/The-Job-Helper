@@ -1,0 +1,37 @@
+            <div class="job_det">
+                
+                <h1><%= @job.name %></h1>
+                
+                <h5>Description: </h5><p><%= @job.description %></p>
+                <% unless  @job.expected_sslc_percentage!=0.0 %>
+                    <h5>Minimum SSLC percentage: </h5><p><%= @job.expected_sslc_percentage %></p>
+                <% end %>
+                <% unless @job.expected_hsc_percentage!=0.0 %>
+                    <h5>Minimum HSC/Diplomo percentage: </h5><p><%= @job.expected_hsc_percentage %></p>
+                <% end %>
+                <% unless  @job.expected_cgpa!=0.0 %>
+                    <h5>Minimum CGPA: </h5><p><%= @job.expected_cgpa %></p>
+                <% end %>
+                <% unless  @job.minimum_experience!=0.0 %>
+                    <h5>Minimum Experience: </h5><p><%= @job.minimum_experience %></p>
+                <% end %>
+                <h5>Minimum Educational Qualification: </h5><%=@job.minimum_educational_qualification %>
+                <p> <h5>Company_name: </h5><p> <%= @job.company.name %> </p> 
+                <% if current_user.role =='individual' %> <%= button_to 'View Details' , '/companies/'+params[:company_id] ,class: 'view_details', method: :get %> <% end %></p>
+                <h5>Salary(LPA): </h5><p><%= @job.salary %></p>
+                <h5>Mode of Work: </h5><p><%= @job.mode %></p>
+                <div class='individual'>
+                    <% if current_user.role == 'individual' %>
+                        <%= button_to 'Apply' , '/jobs/'+@job.id.to_s+'/individual_applications' ,class: 'apply', method: :post %>
+                    <% end %>
+                </div>
+
+                <div class='company'>
+                    <% if current_user.role == 'company' %>
+                        <%= button_to 'View Applications' , @job.id.to_s+'/individual_applications' ,class: 'apply', method: :get %>
+                    <% end %>
+                </div>
+
+                <br><br>
+                
+            </div>

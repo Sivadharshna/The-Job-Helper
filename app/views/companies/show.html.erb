@@ -1,0 +1,21 @@
+        <div class="profile">
+
+            <% if current_user.role=='company' %>
+                <%= button_to "BACK" , '/' , class: 'back' ,method: :get %>
+            <% end %>
+            
+                
+            <h1>Profile</h1>
+            <h5>Name: </h5><p><%= @company.name %></p>
+            <h5>Description: </h5><p><%= @company.description %></p>
+            <h5>Address: </h5><p><%= @company.address %></p>
+            <h5>Contact Number: </h5><p> <%= @company.contact_no %> </p>
+            <h5>Email Id: </h5><p><%= @company.email_id %></p>
+            <h5>Official website: </h5><p> <a href= <%= @company.website_link %> > <%= @company.name %> </a> </p>
+            <br><br>
+            
+            <% if current_user.role== 'company'%>
+                <%= button_to "Edit Profile", @company.id.to_s+'/edit' , class: 'edit' , method: :get %>
+            <% end %>
+        
+        </div>

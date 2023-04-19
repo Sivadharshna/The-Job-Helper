@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  schedule: 2023-03-31 13:45:58
+  approval: one
+  {polymorphic}: MyString
+
+two:
+  schedule: 2023-03-31 13:45:58
+  approval: two
+  {polymorphic}: MyString

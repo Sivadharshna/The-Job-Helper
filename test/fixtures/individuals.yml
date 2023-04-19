@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  email_id: MyString
+  address: MyString
+  age: 1
+  contact_no: MyString
+  experience: 1
+  sslc_percentage: 1.5
+  hsc_diplomo: MyString
+  hsc_diplomo_percentage: 1.5
+  bachelors_degree: MyString
+  masters_degree: MyString
+  user: one
+
+two:
+  name: MyString
+  email_id: MyString
+  address: MyString
+  age: 1
+  contact_no: MyString
+  experience: 1
+  sslc_percentage: 1.5
+  hsc_diplomo: MyString
+  hsc_diplomo_percentage: 1.5
+  bachelors_degree: MyString
+  masters_degree: MyString
+  user: two

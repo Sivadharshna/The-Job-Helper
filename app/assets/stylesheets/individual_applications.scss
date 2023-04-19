@@ -1,0 +1,42 @@
+// Place all the styles related to the IndividualApplications controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.individual_applications_list{
+    margin :10px 10px 10px 10px;
+    padding:10px 10px 10px 10px;
+    height:100%;
+    width:100%;
+}
+
+.individual_applications_list .one{
+    padding: 50px 50px;
+    background-color:white;  
+    color:black;
+    margin-bottom:10px;
+    height:200px;
+}
+
+.individual_applications_list form.button_to .access {
+
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+
+.individual_applications_list .one .option{ 
+    width: 400px;
+    justify-content: space-between;
+    border: 2px rgb(3, 3, 246);
+    text-decoration: none;
+    color: white;
+    display: flex;
+    float: left;
+}
+
+.individual_applications_list .comp_opt{
+    width:90%;
+    height: 50px;
+    padding :5px;
+    justify-content:space-between;
+    display: flex;
+}

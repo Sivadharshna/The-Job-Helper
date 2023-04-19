@@ -1,0 +1,51 @@
+        <main class="new_job">
+            <h2>Enter Job Details</h2>
+            <b>
+            <%= form_with model: [@company, @job], local: true do |f|%>
+                <%= f.label :name , 'Enter job Name' %>
+                <br>
+                <%= f.text_field :name %>
+                <br><br>
+
+                <%= f.label :expected_sslc_percentage, 'Enter mimimum 10th percentage' %>
+                <br>
+                <%= f.number_field :expected_sslc_percentage, step: :any %>
+                <br><br>
+
+                <%= f.label :expected_hsc_percentage, 'Enter minimum HSC/Diplomo percentage' %>
+                <br>
+                <%= f.number_field :expected_hsc_percentage, step: :any %>
+                <br><br>
+
+                <%= f.label :minimum_educational_qualification, 'Enter minimum educational qualification' %>
+                <br>
+                <%= f.text_field :minimum_educational_qualification, step: :any %>
+                <br><br>
+
+                <%= f.label :expected_cgpa, 'Enter the minimum CGPA' %>
+                <br>
+                <%= f.number_field :expected_cgpa, step: :any %>
+                <br><br>
+
+                <%= f.label :minimum_experience, 'Enter minimum_experience' %>
+                <br>
+                <%= f.number_field :minimum_experience %>
+                <br><br>
+
+                <%= f.label :mode , 'Enter physical/remote' %>
+                <br>
+                <%= f.text_field :mode %>
+                <br><br>
+
+                <%= f.label :salary , 'Enter LPA' %>
+                <br>
+                <%= f.number_field :salary , step: :any %>
+                <br><br>
+    
+                <%= f.label :description , 'Enter job description' %>
+                <br>
+                <%= f.text_field :description %>
+                <br><br>
+                <%= f.submit %>
+            <% end %>
+        </main>

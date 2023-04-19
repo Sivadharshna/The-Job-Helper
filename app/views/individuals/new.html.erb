@@ -1,0 +1,64 @@
+        <main class="individual_new">
+            <h1>Enter your Details</h1>
+            <br>
+            <br>
+            <%= form_with model: @individual do |f|%>
+
+                <%= f.label :name , 'Enter your Name' %>
+                <br>
+                <%= f.text_field :name %>
+                <br><br>
+
+                <%= f.label :sslc_percentage, 'Enter 10th percentage' %>
+                <br>
+                <%= f.number_field :sslc_percentage, step: :any %>
+                <br><br>
+
+                <%= f.label :hsc_diplomo, 'Enter HSC/Diplomo' %>
+                <br>
+                <%= f.select :hsc_diplomo, [['HSC','HSC'], ['Diplomo','Diplomo'] ] %>
+                <br><br>
+
+                <%= f.label :hsc_diplomo_percentage, 'Enter HSC/Diplomo percentage' %>
+                <br>
+                <%= f.number_field :hsc_diplomo_percentage, step: :any %>
+                <br><br>
+
+                <%= f.label :age, 'Enter your age' %>
+                <br>
+                <%= f.number_field :age %>
+                <br><br>
+
+                <%= f.label :experience, 'Enter your experience' %>
+                <br>
+                <%= f.number_field :experience %>
+                <br><br>
+
+                <%= f.label :bachelors_degree, 'Enter Bachelor\'s Degree' %>
+                <br>
+                <%= f.text_field :bachelors_degree %>
+                <br><br>
+
+                <%= f.label :masters_degree, 'Enter Master\'s Degree' %>
+                <br>
+                <%= f.text_field :masters_degree %>
+                <br><br>
+
+                <%= f.label :email_id, 'Enter your email id' %>
+                <br>
+                <%= f.text_field :email_id %>
+                <br><br>
+
+                <%= f.label :contact_no, 'Enter your contact_no' %>
+                <br>
+                <%= f.text_field :contact_no %>
+                <br><br>
+
+                <%= f.label :address, 'Enter your address' %>
+                <br>
+                <%= f.text_field :address %>
+                <br><br>
+
+                <%= f.submit %>
+            <% end %>
+        </main>

@@ -1,0 +1,24 @@
+            <div class="individual_applications_list">
+                
+                
+                <br>
+                <% @individual_applications.each do |individual_application| %>
+                    <div class="one">
+                        <h4> <%= individual_application.job.name %> </h4>
+                        <p> Company : <%= individual_application.job.company.name %> </p>
+                        <p> Applicant Name: <%= individual_application.individual.name %></p>
+                        <p> Salary : <%= individual_application.job.salary %> LPA</p>
+                        <p> Mode of Work : <%= individual_application.job.mode %></p>
+                        <p> Status :  <%= individual_application.status%></p>
+                        
+
+                            <div class=öption>
+                                    <% if current_user.role=='company'%> 
+                                        <%= button_to 'View Profile' , '/individuals/'+individual_application.individual.id.to_s ,class: 'access' , method: :get %>
+                                        <%= button_to 'Approve' , 'individual_applications/'+individual_application.id.to_s+'/accepted_offers/new' ,class: 'access' , method: :get %>
+                                    <% end %>
+                            </div>
+
+                    </div>
+                <% end %>
+            </div>

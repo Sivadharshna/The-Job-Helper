@@ -1,0 +1,121 @@
+// Place all the styles related to the Jobs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.new_job{
+    align-items: center;
+    text-align: center;
+    padding: 20px 20px;
+}
+.new_job h2{
+    font-weight:bold;
+}
+
+.new_job form label{
+    font-size:medium;
+    font-weight: normal;
+}
+
+.new_job input[type="submit"]{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+.jobs_list{
+    margin :10px 10px 10px 10px;
+    padding:10px 10px 10px 10px;
+    height:100%;
+    width:100%;
+}
+
+.jobs_list .one{
+    padding: 50px 50px;
+    background-color:white;  
+    color:black;
+    margin-bottom:10px;
+    height:200px;
+}
+
+.jobs_list form.button_to .access {
+
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+
+.jobs_list .one .option{ 
+    width: 400px;
+    justify-content: space-between;
+    border: 2px rgb(3, 3, 246);
+    text-decoration: none;
+    color: white;
+    display: flex;
+    float: left;
+}
+
+.jobs_list .comp_opt{
+    width:90%;
+    height: 50px;
+    padding :5px;
+    justify-content:space-between;
+    display: flex;
+}
+.jobs_list .comp_opt form.button_to .access{
+    border: 5px solid white;
+}
+.new_job{
+    align-items: center;
+    text-align: center;
+    padding: 20px 20px;
+}
+.new_job h2{
+    font-weight:bold;
+}
+
+.new_job form label{
+    font-size:medium;
+    font-weight: normal;
+}
+
+.new_job input[type="submit"]{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+.job_det{
+    padding: 10px 10px;
+    margin :10px 10px;
+    border: 5px solid rgb(117, 229, 166);
+}
+.job_det h1{
+    text-align:center;
+}
+.job_det h5{
+    color:lightpink;
+    font-size:large;
+}
+.job_det p{
+    font-size:small;
+}
+.job_det .individual form.button_to {
+    align-items:center;
+    padding-top : 20px;
+    text-align: center;
+}
+
+.job_det .individual form.button_to .apply{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+
+.job_det form.button_to .view_details{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+
+.job_det .company form.button_to .apply{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}

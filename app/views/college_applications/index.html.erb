@@ -1,0 +1,21 @@
+            <div class="college_applications_list">
+                
+                
+                <br>
+                <% @college_applications.each do |college_application| %>
+                    <div class="one">
+                        <p> Company : <%= college_application.company.name %> </p>
+                        <p> College Name: <%= college_application.college.name %></p>
+                        <p> Status :  <%= college_application.status%></p>
+                        
+
+                            <div class=öption>
+                                    <% if current_user.role=='company'%> 
+                                        <%= button_to 'View Profile' , '/colleges/'+college_application.college.id.to_s ,class: 'access' , method: :get %>
+                                        <%= button_to 'Approve' , 'college_applications/'+college_application.id.to_s+'/accepted_offers/new' ,class: 'access' , method: :get %>
+                                    <% end %>
+                            </div>
+ 
+                    </div>
+                <% end %>
+            </div>

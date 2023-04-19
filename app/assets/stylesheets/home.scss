@@ -1,0 +1,28 @@
+// Place all the styles related to the Home controller here.     background-image: linear-gradient( rgba(255, 250, 250, 0.717), rgba(255, 255, 255, 0.717)), url(https://ibdnewstoday.com/wp-content/uploads/2016/12/shutterstock_388844110-300x200.jpg);
+
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.home form.button_to .menu  {
+    width: 23.3%;
+    height: 200px;
+    padding: 15px 15px;
+    text-align: center;
+    margin: 20px 10px;
+    border: 2px rgb(34, 199, 249);
+    text-decoration: none;
+    background-color: rgb(144, 8, 242);
+    color: white;
+    border-radius:50px;
+    box-shadow:inset 0 0 0 0 rgb(81, 255, 156);
+    float: left;
+    font-size: 1rem;
+    transition: ease-out 0.5s;
+}
+.home form.button_to .menu:hover{
+    box-shadow:inset 300px 0 0 0 rgb(34, 199, 249);
+}
+
+.home .college .courses{
+    padding: 10px 10px;
+    padding-bottom: 30px;
+}

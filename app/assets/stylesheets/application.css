@@ -1,0 +1,106 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+ @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap');
+
+ *{
+    font-family: 'Bree Serif', serif;
+    font-weight: lighter;
+ }
+
+body{
+    margin: 0;
+    padding: 0;
+    background-position: center;
+    background-size: cover;
+    color:black;
+}
+.banner{
+    color: white;
+    background-size: cover;
+    background-position: center;
+}
+
+.navbar{
+    width: 100%;
+    margin: auto;
+    padding: 20px 50px 20px 20px;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+    background-color:rgb(3, 87, 104);
+}
+
+.navbar p#site_name{
+    width: 200px;
+    cursor:pointer;
+    color: white;
+    font-size: 25px;
+    font-weight:bolder;
+    text-align: center;
+}
+
+.navbar ul li{
+    list-style:none;
+    display:inline-block;
+    margin: 0px 40px;
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    
+}
+
+.actions{
+    align-items: center;
+    text-align: center;
+}
+
+.actions input[type="submit"]{
+    padding: 10px 10px;
+    background-color:rgb(125, 0, 69);
+    color: white;
+}
+
+.field{
+
+    text-align: center;
+    align-items: center;
+    justify-content:space-between;
+    padding :50px 50px 10px 50px;
+    background-color: rgba(255, 251, 251, 0.7);
+}
+
+.notice p#a{
+    text-align: center;
+    align-items: center;
+    width: fit-content;
+    padding: 20px 20px;
+    margin-bottom: 20px;
+    border: 1px solid #fbeed5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .notice p#a   {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #468847;
+  }

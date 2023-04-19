@@ -1,0 +1,44 @@
+
+            <div class="applications_list">
+
+                <% if current_user.role== 'company' %>
+                        <h1> INDIVIDUAL APPLICANTS SCHEDULE </h1>
+                        <% @accepted_individuals.each do |a| %>
+                            <div class="one">
+                                <% @hash_rows %>
+                                    <p> Applicant Name: <%= a["individual"]  %></p>
+                                    <h4> <%= a["job"] %> </h4>
+                                    <p> Company: <%= a["company"] %> </p>
+                                    <p> Salary: <%= a["salary"] %> </p>
+                                    <p id='time'> Schedule: <%= a["schedule"] %> </p>
+                                    <%= button_to 'Select Individual' , '/accepted_offers/'+a["id"].to_s+'/job_details' , class: "access" ,method: :post %>
+                            </div>
+                        <% end %>
+
+                        <br><br><br>
+
+                            <h1> COLLEGE APPLICANTS SCHEDULE </h1>
+                            <% @accepted_colleges.each do |a| %>
+                                <div class="one">
+                                    <h4> <%= a["college"] %> </h4>
+                                    <p id='time'> Schedule: <%= a["schedule"] %> </p>
+                                    <%= button_to 'View College profile' , '/colleges/'+a["id"].to_s , class: 'access' , method: :get%>
+                                    <%= button_to 'Select Students' , '/colleges/'+a["id"].to_s+'/students/' , class: 'access' , method: :get%>
+                                </div>
+                            <% end %>
+                <% else %>
+                    <% @accepted_offer.each do |a| %>
+                            <div class="one">
+                                <% if current_user.role=='individual' %>
+                                    <h4> <%= a.job.name %> </h4>
+                                    <p> Company : <%= a.job.company.name %> </p>
+                                    <p> Applicant Name: <%= a.individual.name %></p>
+                                    <p> Salary : <%= a.job.salary %> LPA</p>
+                                <% elsif current_user.role=='college' %>
+                                    <h4> <% a.company.name %> </h4>
+                                <% end %>
+                                <p id='time'> Schedule: <%= a.accepted_offer.schedule %> </p>
+                            </div>
+                    <% end %>
+                <% end %>
+            </div>

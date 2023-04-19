@@ -1,0 +1,122 @@
+// Place all the styles related to the Companies controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.company{
+    align-items: center;
+    text-align: center;
+    padding-top:20px;
+    padding-bottom:20px
+}
+.company h4{
+    font-weight:bolder;
+    text-transform: uppercase;
+    font-size:large;
+}
+
+.company input[type="submit"]{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+
+.company label{
+    font-weight:bold;
+}
+
+.Companies_list{
+    margin :10px 10px 10px 10px;
+    padding:10px 10px 10px 10px;
+    height:100%;
+    width:100%;
+}
+
+.Companies_list .one{
+    padding: 50px 50px;
+    background-color:white;  
+    color:black;
+    margin-bottom:10px;
+    height:200px;
+}
+
+.Companies_list form.button_to .details {
+
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+
+.Companies_list .one .option{ 
+    width: 400px;
+    justify-content: space-between;
+    border: 2px rgb(3, 3, 246);
+    text-decoration: none;
+    color: white;
+    display: flex;
+    float: left;
+}
+
+.new_company{
+    align-items: center;
+    text-align: center;
+    padding-top:20px;
+    padding-bottom:20px
+}
+
+.new_company input[type="submit"]{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+} 
+
+.new_company form {
+    font-size:15px;
+}
+
+.new_company h1{
+    font-weight:bold;
+    text-align:center;
+    text-transform:uppercase;
+}
+
+.profile{
+    padding-left: 10px;
+    padding-right:10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: white;
+    padding-bottom:20px;
+    padding-top:20px; 
+    margin-bottom:20px;  
+ }
+.profile h1{
+    padding-top:10px;
+    text-align:center;
+    color: rgb(135, 0, 83);
+    text-transform: uppercase;
+}
+.profile h5{
+    color:black;
+    text-transform: uppercase;
+    font-weight:bolder;
+    font-size: medium;
+}
+.profile p{
+    color:midnightblue;
+    font-size:small;
+    font-weight: bold;
+}
+.profile form.button_to .edit{
+    padding:10px 10px;
+    background-color: rgb(135, 0, 83);
+    text-align:center;
+    text-transform: uppercase;
+    color: white ;
+}
+
+.profile form.button_to .back{
+    padding:10px 10px;
+    background-color: rgb(135, 0, 83);
+    text-align:center;
+    text-transform: uppercase;
+    color: white ;
+}

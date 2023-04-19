@@ -1,0 +1,14 @@
+            <div class="Companies_list">
+                <br>
+                <% @companies.each do |company| %>
+                    <div class="one">
+                        <%= company.name %></h4>
+                        <p><%= company.address %> LPA</p>
+                        <p><%= company.contact_no %></p>
+                        <div class="option">
+                            <%= button_to 'View Details' , '/companies/'+company.id.to_s.to_s ,class: 'details' , method: :get %>
+                            <%= button_to 'Apply' , '/companies/'+company.id.to_s+'/college_applications/new' ,class: 'details' , method: :post %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>

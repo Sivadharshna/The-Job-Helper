@@ -1,0 +1,30 @@
+        <main class="company">
+            <h4>Enter company Details</h4>
+            <%= form_with model: @company do |f|%>
+                <%= f.label :name , 'Enter company Name' %>
+                <br>
+                <%= f.text_field :name  %>
+                <br><br>
+                <%= f.label :description , 'Enter company description' %>
+                <br>
+                <%= f.text_field :description  %>
+                <br><br>
+                <%= f.label :address, 'Enter company Address' %>
+                <br>
+                <%= f.text_field :address  %>
+                <br><br>
+                <%= f.label :contact_no, 'Enter Contact No.' %>
+                <br>
+                <%= f.text_field :contact_no  %>
+                <br><br>
+                <%= f.label :email_id, 'Enter email Id' %>
+                <br>
+                <%= f.text_field :email_id  %>
+                <br><br>
+                <%= f.label :website_link, 'Paste the company official website link' %>
+                <br>
+                <%= f.text_field :website_link  %>
+                <br><br>
+                <%= f.submit %>
+            <% end %>
+        </main>

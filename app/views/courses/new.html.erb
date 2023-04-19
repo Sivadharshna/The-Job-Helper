@@ -1,0 +1,11 @@
+        <main class="new_course">
+            <h2>Enter course Details</h2>
+            <b>
+            <%= form_with model: [@college, @course], local: true do |f|%>
+                <%= f.label :name , 'Enter course Name' %>
+                <br>
+                <%= f.text_field :name %>
+                <br><br>
+                <%= f.submit %>
+            <% end %>
+        </main>

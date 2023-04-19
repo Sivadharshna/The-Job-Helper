@@ -1,0 +1,80 @@
+// Place all the styles related to the Courses controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.courses_list{
+    padding:10px 10px 10px 10px;
+    height:100%;
+    width:100%;  
+}
+
+.courses_list .one{
+    padding: 10px 10px;
+    background-color:white;
+    height:50px;
+    width: 90%;
+    float: left;
+    display: flex;
+    color:black;
+}
+
+.courses_list form.button_to .access {
+
+    padding:10px 10px;
+    background-color:indigo;
+    color:white;
+}
+
+.courses_list .one .option{
+    
+    float: left;
+    display: flex;
+    border: 2px rgb(3, 3, 246);
+    text-decoration: none;
+    color: white;
+    width:50%;
+
+}
+
+.courses_list .one .option form{
+    padding-right:10px;
+    padding-left:25px;
+}
+.courses_list .one h4{
+    width:50%;
+}
+
+.courses_list .comp_opt{
+    width:90%;
+    height: 50px;
+    padding :5px;
+    justify-content:space-between;
+    display: flex;
+}
+
+.courses_list .comp_opt form.button_to{
+    padding-top:50px;
+}
+.courses_list .comp_opt form.button_to .access{
+    border: 5px solid white;
+}
+
+.new_course{
+    align-items: center;
+    text-align: center;
+    padding: 20px 20px;
+}
+.new_course h2{
+    font-weight:bold;
+}
+
+.new_course form label{
+    font-size:medium;
+    font-weight: normal;
+}
+
+.new_course input[type="submit"]{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+

@@ -1,0 +1,40 @@
+// Place all the styles related to the Individuals controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.individual_new{
+    align-items:center;
+    text-align:center;
+    padding-top:30px;
+    padding-bottom: 30px;
+}
+.individual_new form input[type="submit"] {
+    padding:10px 10px;
+    color:white;
+    background-color: rgb(126, 0, 80)
+}
+.individual_new h1{
+    font-size: larger;
+    font-weight: bolder;
+}
+.individual{
+    padding: 20px 20px;
+    border: 5px solid rgb(117, 229, 166);
+}
+.individual form.button_to .edit{
+    padding:10px 10px;
+    background-color: rgb(125, 0, 62);
+    color:white;
+}
+.individual h1{
+    text-align:center;
+    font-weight:bolder;
+    
+}
+.individual h5{
+    font-size: medium;
+    font-weight:bolder;
+    color:pink
+}
+.individual p{
+    font-size:small;
+}

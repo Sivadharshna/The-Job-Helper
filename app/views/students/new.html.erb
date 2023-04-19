@@ -1,0 +1,31 @@
+        <div class="student_new">
+            <h1>Enter Student Details</h1>
+            <%= form_with model: [@course, @student] , local: true do |f|%>
+                <%= f.label :name , 'Enter Student Name' %>
+                <br>
+                <%= f.text_field :name %>
+                <br><br>
+                <%= f.label :sslc_percentage, 'Enter 10th percentage' %>
+                <br>
+                <%= f.number_field :sslc_percentage, step: :any %>
+                <br><br>
+                <%= f.label :hsc_diplomo, 'Enter HSC/Diplomo' %>
+                <br>
+                <%= f.text_field :hsc_diplomo %>
+                <br><br>
+                <%= f.label :hsc_diplomo_percentage, 'Enter HSC/Diplomo percentage' %>
+                <br>
+                <%= f.number_field :hsc_diplomo_percentage, step: :any %>
+                <br><br>
+                <%= f.label :cgpa, 'Enter the current CGPA' %>
+                <br>
+                <%= f.number_field :cgpa, step: :any %>
+                <br><br>
+
+                <%= f.label :graduation_year, 'Enter the year of graduation' %>
+                <br>
+                <%= f.number_field :graduation_year %>
+                <br><br>
+                <%= f.submit %>
+            <% end %>
+        </div>

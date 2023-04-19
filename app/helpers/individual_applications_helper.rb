@@ -1,0 +1,2 @@
+module IndividualApplicationsHelper
+end

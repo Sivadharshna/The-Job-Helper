@@ -1,0 +1,83 @@
+// Place all the styles related to the Colleges controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.new_college{
+    align-items: center;
+    text-align: center;
+    padding-top:20px;
+    padding-bottom:20px
+}
+
+.new_college input[type="submit"]{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+} 
+
+.new_college form {
+    font-size:15px;
+}
+
+.new_college h1{
+    font-weight:bold;
+    text-align:center;
+    text-transform:uppercase;
+}
+
+.new_college{
+    align-items: center;
+    text-align: center;
+    padding-top:20px;
+    padding-bottom:20px
+}
+
+.new_college input[type="submit"]{
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+} 
+
+.new_college form {
+    font-size:15px;
+}
+
+.new_college h1{
+    font-weight:bold;
+    text-align:center;
+    text-transform:uppercase;
+}
+
+.profile{
+    padding-left: 10px;
+    padding-right:10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: white;
+    padding-bottom:20px;
+    padding-top:20px; 
+    margin-bottom:20px;  
+ }
+.profile h1{
+    padding-top:10px;
+    text-align:center;
+    color: rgb(135, 0, 83);
+    text-transform: uppercase;
+}
+.profile h5{
+    color:black;
+    text-transform: uppercase;
+    font-weight:bolder;
+    font-size: medium;
+}
+.profile p{
+    color:midnightblue;
+    font-size:small;
+    font-weight: bold;
+}
+.profile form.button_to .edit{
+    padding:10px 10px;
+    background-color: rgb(135, 0, 83);
+    text-align:center;
+    text-transform: uppercase;
+    color: white ;
+}

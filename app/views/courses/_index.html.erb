@@ -1,0 +1,19 @@
+            <div class="courses_list">
+                
+                <div class= "comp_opt">
+                    <h1>Course Details</h1>
+                    <%= button_to 'Add courses' , '/colleges/'+current_user.college.id.to_s+'/courses/new' ,class: 'access' , method: :get %>
+                </div>
+                <br>
+                <% @courses.each do |course| %>
+                    <div class="one">
+                        <h4><%= course.name %></h4>
+                        <div class="option">
+                            <%= button_to 'Edit' , '/colleges/'+course.college_id.to_s+'/courses/'+course.id.to_s+'/edit' ,class: 'access' , method: :get %>
+                            <%= button_to 'Delete' , '/colleges/'+course.college_id.to_s+'/courses/'+course.id.to_s ,class: 'access' , method: :delete %>
+                            <%= button_to 'Add Students' , '/courses/'+course.id.to_s+'/students/new' ,class: 'access' , method: :get %>
+                        </div>
+                        <br>
+                    </div>
+                <% end %>
+            </div>

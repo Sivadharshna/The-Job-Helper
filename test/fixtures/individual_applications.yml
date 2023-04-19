@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  individual: one
+  job: one
+  status: MyString
+
+two:
+  individual: two
+  job: two
+  status: MyString

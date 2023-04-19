@@ -1,0 +1,58 @@
+// Place all the styles related to the AcceptedOffers controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.applications_list{
+    margin :10px 10px 10px 10px;
+    padding:10px 10px 10px 10px;
+    height:100%;
+    width:100%;
+}
+
+.applications_list .one{
+    padding: 50px 50px;
+    background-color:white;  
+    color:black;
+    margin-bottom:10px;
+    height:200px;
+}
+
+.applications_list form.button_to .access {
+
+    padding:10px 10px;
+    background-color:rgb(135, 0, 83);
+    color:white;
+}
+
+.applications_list .one .option{ 
+    width: 400px;
+    justify-content: space-between;
+    border: 2px rgb(3, 3, 246);
+    text-decoration: none;
+    color: white;
+    display: flex;
+    float: left;
+}
+
+.applications_list .one p#time{
+    color:red;
+}
+
+.accept_offer
+{
+    height: 200px;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color:white;
+}
+
+.accept_offer form{
+    text-align: center;
+}
+
+.applications_list h1{
+    text-align: center;
+}
