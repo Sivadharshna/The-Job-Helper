@@ -4,6 +4,8 @@ class College < ApplicationRecord
   has_many :college_applications, dependent: :destroy
   has_many :companies, :through => :college_applications
 
+  has_one_attached :photo
+  
   validates :name, :email_id, :user_id, :uniqueness =>true
   validates_associated :courses
   validates :email_id, :format => { with: URI::MailTo::EMAIL_REGEXP }

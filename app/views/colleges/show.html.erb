@@ -1,18 +1,25 @@
             <div class="profile">
-                
-                <h1>Profile</h1>
-                <h5>Name: </h5><p><%= @college.name %></p>
-                <h5>Address: </h5><p><%= @college.address %></p>
-                <h5>Total no of students: </h5><p> Not yet updated </p>
-                <h5>No of students got placed: </h5><p>Not yet updated </p>
-                <h5>No of students yet to be placed: </h5><p>Not yet updated</p>
-                <h5>Contact Number: </h5><p> <%= @college.contact_no %> </p>
-                <h5>Email Id: </h5><p><%= @college.email_id %></p>
-                <h5>Official website: </h5><a href= <%= @college.website_link %> > <%= @college.name %> </a>
-                <br><br>
+                <% if @college.photo.attached? %>
+                    <img src="<%= url_for(@college.photo) %>" class="img-fluid rounded mx-auto d-block img-thumbnail rounded-circle" alt="home">
+                <% end %>
+                <% if @college %>
+                    <br><br>
+                    <h1><%= @college.name %></h1>
+                    <br>
+                    <h5>Address: </h5><p><%= @college.address %></p>
+                    <h5>Total no of students: </h5><p> Not yet updated </p>
+                    <h5>No of students got placed: </h5><p>Not yet updated </p>
+                    <h5>No of students yet to be placed: </h5><p>Not yet updated</p>
+                    <h5>Contact Number: </h5><p> <%= @college.contact_no %> </p>
+                    <h5>Email Id: </h5><p><%= @college.email_id %></p>
+                    <h5>Official website: </h5><a href= <%= @college.website_link %> > <%= @college.name %> </a>
+                    <br><br>
+                <% else %>
+                    <h1> No such profile exists </h1>
+                <% end %>
                 
                 <% if current_user.role== 'college'%>
-                    <%= button_to "Edit Profile", @college.id.to_s+'/edit' , class: 'edit' , method: :get %>
+                    <%= button_to "Edit Profile", '/colleges/'+@college.id.to_s+'/edit' , class: 'edit' , method: :get %>
                 <% end %>
 
             </div>

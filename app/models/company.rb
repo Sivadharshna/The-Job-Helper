@@ -7,6 +7,8 @@ class Company < ApplicationRecord
   has_many :college_applications, dependent: :destroy
   has_many :colleges, :through => :college_applications
 
+  has_one_attached :photo
+
   validates :name, :uniqueness => { :case_sensitive => false }, :presence=> true
   validates :email_id, :user_id, :uniqueness => { :case_sensitive => false }
   #validates :contact_no , :format => { :with => /\A\d+\z/ } , :length => { :minimum => 10, :maximum => 15 }

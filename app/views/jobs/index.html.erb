@@ -1,25 +1,29 @@
-            <div class="jobs_list">
+            <div class="container">
                 
                 <div class= "comp_opt">
-                    <h1>Job Details</h1>
-                    <%  if current_user.role=='company' %>
-                        <%= button_to 'Add Jobs' , '/companies/'+current_user.company.id.to_s+'/jobs/new' ,class: 'access' , method: :get %>
-                    <% end %>
+                    <h1> Jobs </h1>
+                    
                 </div>
                 <br>
-                <% @jobs.each do |job| %>
-                    <div class="one">
-                        <%= job.name %></h4>
-                        <p> <%= job.company.name %> </p>
-                        <p><%= job.salary %> LPA</p>
-                        <p><%= job.mode %></p>
-                        <div class="option">
-                            <%= button_to 'View Details' , '/companies/'+job.company_id.to_s+'/jobs/'+job.id.to_s ,class: 'access' , method: :get %>
-                            <% if current_user.role== 'company' %>
-                                <%= button_to 'Edit' , '/companies/'+job.company_id.to_s+'/jobs/'+job.id.to_s+'/edit' ,class: 'access' , method: :get %>
-                                <%= button_to 'Delete' , '/companies/'+job.company_id.to_s+'/jobs/'+job.id.to_s ,class: 'access' , method: :delete %>
-                            <% end %>
+                <% if !(@jobs.empty?) %>
+                    <% @jobs.each do |job| %>
+                        <div class="row shadow p-3 mb-5 bg-body-tertiary rounded" style='background-color: #e3f2fd;'>
+                            <div class='container'>
+                                <br>
+                                <h4><%= job.name %></h4>
+                                <p> <%= job.company.name %> </p>
+                                <p><%= job.salary %> LPA</p>
+                                <p><%= job.mode %></p>
+                                <div class="option">
+                                    <%= button_to 'View Details' , '/companies/'+job.company_id.to_s+'/jobs/'+job.id.to_s ,class: 'btn btn-primary' , method: :get %>
+                                    
+                                </div>
+                                <br>
+                            </div>
                         </div>
-                    </div>
+                        <br>
+                    <% end %>
+                <% else %>
+                    <h4> Sorry! We are empty now. Try again later </h4>
                 <% end %>
             </div>

@@ -3,6 +3,7 @@ class Individual < ApplicationRecord
 
   has_many :individual_applications ,dependent: :destroy
   has_many :jobs, :through => :individual_applications
+  has_one_attached :resume
 
   validates :name ,:email_id, :contact_no, :sslc_percentage, :hsc_diplomo, :hsc_diplomo_percentage , :presence => true
   validates :email_id, :user_id, :uniqueness => true
@@ -10,9 +11,7 @@ class Individual < ApplicationRecord
   validates :contact_no , :format => { :with => /\A\d+\z/ }, :length => { :minimum => 10 , :maximum => 10}
   validates_inclusion_of :hsc_diplomo, in: ['HSC', 'DIPLOMO']
 
-  scope :having_accepted_offer, -> { Individual.joins(individual_applications: :accepted_offer).count > 1 }
-  scope :applied_for_jobs, -> { Individual.joins(:individual_applications).count > 1 }
-
+  
   before_validation :case_convert
 
   def case_convert

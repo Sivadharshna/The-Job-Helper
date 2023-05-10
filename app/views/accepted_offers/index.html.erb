@@ -1,44 +1,80 @@
 
-            <div class="applications_list">
+            <div class="container">
 
-                <% if current_user.role== 'company' %>
-                        <h1> INDIVIDUAL APPLICANTS SCHEDULE </h1>
-                        <% @accepted_individuals.each do |a| %>
-                            <div class="one">
-                                <% @hash_rows %>
-                                    <p> Applicant Name: <%= a["individual"]  %></p>
-                                    <h4> <%= a["job"] %> </h4>
-                                    <p> Company: <%= a["company"] %> </p>
-                                    <p> Salary: <%= a["salary"] %> </p>
-                                    <p id='time'> Schedule: <%= a["schedule"] %> </p>
-                                    <%= button_to 'Select Individual' , '/accepted_offers/'+a["id"].to_s+'/job_details' , class: "access" ,method: :post %>
-                            </div>
+                <% if current_user.role== 'company' || current_user.role=='individual' %>
+                        <% if current_user.role=='individual'%>
+                            <h1> Your Schedules </h1>
+                            <br>
+                        <% elsif current_user.role=='company' %>
+                            <h1> Interviews </h1>
+                            <br>
                         <% end %>
-
-                        <br><br><br>
-
-                            <h1> COLLEGE APPLICANTS SCHEDULE </h1>
-                            <% @accepted_colleges.each do |a| %>
-                                <div class="one">
-                                    <h4> <%= a["college"] %> </h4>
-                                    <p id='time'> Schedule: <%= a["schedule"] %> </p>
-                                    <%= button_to 'View College profile' , '/colleges/'+a["id"].to_s , class: 'access' , method: :get%>
-                                    <%= button_to 'Select Students' , '/colleges/'+a["id"].to_s+'/students/' , class: 'access' , method: :get%>
-                                </div>
+                        <% if !@accepted_individuals.empty? %>
+                            <% @accepted_individuals.each do |a| %>
+                                <div class="row shadow p-3 mb-5 bg-body-tertiary rounded" id='<%= a.id %>'>
+                                    <div class='container'>
+                                        <h4> <%= a.approval.job.name %> </h4>
+                                        <p> Applicant Name: <%= a.approval.individual.name  %></p>
+                                        <p> Company: <%= a.approval.job.company.name %> </p>
+                                        <p> Salary: <%= a.approval.job.salary %> </p>
+                                        <p id='time'> Schedule: <%= a.schedule %> </p>
+                                        <% if current_user.role=='company'%>
+                                            <%= button_to 'Select Individual' , '/accepted_offers/'+a.id.to_s+'/job_details' , class: "btn btn-success" ,method: :post %>
+                                        <% end %>
+                                    </div>
+                                 </div>
                             <% end %>
-                <% else %>
-                    <% @accepted_offer.each do |a| %>
-                            <div class="one">
-                                <% if current_user.role=='individual' %>
-                                    <h4> <%= a.job.name %> </h4>
-                                    <p> Company : <%= a.job.company.name %> </p>
-                                    <p> Applicant Name: <%= a.individual.name %></p>
-                                    <p> Salary : <%= a.job.salary %> LPA</p>
-                                <% elsif current_user.role=='college' %>
-                                    <h4> <% a.company.name %> </h4>
-                                <% end %>
-                                <p id='time'> Schedule: <%= a.accepted_offer.schedule %> </p>
-                            </div>
-                    <% end %>
+                        <% else %>
+                            <h4> No schedules ! </h4>
+                        <% end %>
+                <% end %>
+                <% if current_user.role== 'company' || current_user.role=='college' %>
+                        <br><br><br>
+                        <% if current_user.role=='college'%>
+                            <h1> Your Schedules </h1>
+                            <br>
+                        <% elsif current_user.role=='company' %>
+                            <h1> Campus schedules </h1>
+                            <br>
+                        <% end %>
+                        <% if !@accepted_colleges.empty? %>
+                            <% @accepted_colleges.each do |a| %>
+                                <% if a.schedule > 10.days.ago.to_date %>
+                                    <div class="row shadow p-3 mb-5 bg-body-tertiary rounded" id=<%= a.id %>>
+                                        <div class='container'>
+                                            <% if current_user.role=='company' %>
+                                                <h4> <%= a.approval.college.name %> </h4>
+                                                <p id='time'> Schedule: <%= a.schedule %> </p>
+                                                <div class='row' >
+                                                    <div class='col-md-4'>
+                                                        <%= button_to 'View College profile' , '/colleges/'+a.approval.college.id.to_s , class: 'btn btn-primary' , method: :get%>
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <%= button_to 'View listed students' , '/college_applications/'+a.approval_id.to_s+'/companies/'+params[:company_id]+'/students/view' , class: 'btn btn-primary' , method: :get%>
+                                                    </div>
+                                                    <div class='col-md-4'>
+                                                        <%= button_to 'View selected students' , '/college_applications/'+a.approval_id.to_s+'/appoint' , class: 'btn btn-success' , method: :get%>
+                                                    </div>
+                                                </div>
+                                            <% end %>
+                                            <% if current_user.role=='college'%>
+                                                <h4> <%= a.approval.company.name %> </h4>
+                                                <p id='time'> Schedule: <%= a.schedule %> </p>\
+                                                <div class='row' >
+                                                    <div class='col-md-6'>
+                                                        <%= button_to 'View listed students' , '/college_applications/'+a.approval_id.to_s+'/companies/'+params[:company_id]+'/students/view' , class: 'btn btn-primary pull-left' , method: :get%>
+                                                    </div>
+                                                    <div class='col-md-6'>
+                                                        <%= button_to 'View selected students' , '/college_applications/'+a.approval_id.to_s+'/appoint' , class: 'btn btn-success pull-right' , method: :get%>
+                                                    </div>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                    </div>
+                                <% end%>
+                            <% end %>
+                        <% else %>
+                            <h4> No schedules ! </h4>
+                        <% end %>
                 <% end %>
             </div>

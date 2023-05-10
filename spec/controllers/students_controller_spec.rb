@@ -14,8 +14,9 @@ RSpec.describe StudentsController, type: :controller do
                 get :index , params: { college_id: college.id }
                 expect(response).to render_template(:index)
             end 
-            it 'allows a company to view students of a college' do
+            it 'allows a company to view students index of a college' do
                 sign_in user1
+                company=create(:company, user: user1)
                 college=create(:college, user: user2)
                 get :index , params: { college_id: college.id }
                 expect(response).to render_template(:index)
@@ -25,6 +26,7 @@ RSpec.describe StudentsController, type: :controller do
                 college=create(:college, user: user2)
                 get :index , params: { college_id: college.id }
                 expect(flash[:notice]).to eq('Restricted Access')
+                expect(response).to_not render_template(:index)
             end
         end
     end

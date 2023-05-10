@@ -1,0 +1,15 @@
+<h1> Your Schedules </h1>
+<div class='container'>
+    <% if !@job_results.empty? %>
+        <% @job_results.each do |a| %>
+            <div class="row shadow p-3 mb-5 bg-body-tertiary rounded">
+                <h4> <%= a.accepted_offer.approval.job.name %> </h4>
+                <p> Company: <%= a.accepted_offer.approval.job.company.name %> </p>
+                <p> Salary: <%= a.accepted_offer.approval.job.salary %> </p>
+                <p> Schedule: <%= a.result %> </p>
+            </div>
+        <% end %>
+    <% else %>
+        <h4> No results has been published yet for you! Kindly check later </h4>
+    <% end %>
+</div>

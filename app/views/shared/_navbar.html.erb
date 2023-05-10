@@ -1,19 +1,83 @@
         <div class="banner"> 
-            <div class= "navbar">
-                <p id="site_name" >The Job Searcher </p>
-                <ul>
-                    <% if user_signed_in? %>
+            <nav class="navbar" style="background-color: #e3f2fd;">
+                <div class ='container-fluid'>
+
+                        <a class="navbar-brand" href="#">
+                            <img src="/assets/job.jpg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                            The Job Searcher
+                        </a>
+                        <ul>
+                            <% if user_signed_in? %>
+                                
+                                <li class="nav-item">
+                                <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
+                                </li>
+                            <% else %>
+                                <li class="nav-item">
+                                <%= link_to 'Sign In', new_user_session_path, class: 'nav-link' %>
+                                </li>
+                                <li class="nav-item">
+                                <%= link_to 'Register', new_user_registration_path, class: 'nav-link' %>
+                                </li>
+                            <% end %>
+                        </ul>
+                </div>
+            </nav>
+
+            <nav class="navbar navbar-expand-lg " style="background-color:  #e3f2fd;">
+                <div class="container-fluid" >
+                    
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                        <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
+                        <a class="nav-link active" aria-current="page" href="<%= root_path %>">Home</a>
                         </li>
-                    <% else %>
-                        <li class="nav-item">
-                        <%= link_to 'Sign In', new_user_session_path, class: 'nav-link' %>
-                        </li>
-                        <li class="nav-item">
-                        <%= link_to 'Register', new_user_registration_path, class: 'nav-link' %>
-                        </li>
-                    <% end %>
-                </ul>
-            </div>
+                        <% if user_signed_in? %>    
+                            <% if current_user.role=='individual'%>
+                                <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    View
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href= '<%='/individuals/'+current_user.individual.id.to_s+'/jobs/specific'%>'>Jobs</a></li>
+                                    <li><a class="dropdown-item" href='<%='/individual/'+current_user.individual.id.to_s+'/individual_applications/'%>'>My Applications</a></li>
+                                    <li><a class="dropdown-item" href="<%='/accepted_offers/calendar'%>">My Calendar</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="<%='/individuals/'+current_user.individual.id.to_s+'/job_details'%>">Results</a></li>
+                                </ul>
+                                </li>
+                            <%end%>
+                            <% if current_user.role=='company'%>
+                                <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    View
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href= '<%='/jobs/specific'%>'>Jobs</a></li>
+                                    <li><a class="dropdown-item" href='<%='/companies/'+current_user.company.id.to_s+'/college_applications/'%>'>Campus Applications</a></li>
+                                    <li><a class="dropdown-item" href="<%='/accepted_offers/calendar'%>">Schedules Calendar</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                </ul>
+                                </li>
+                            <% end %>
+                            <% if current_user.role=='college' %>
+                                <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    View
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href='<%='/colleges/'+current_user.college.id.to_s+'/college_applications/'%>'>Applications</a></li>
+                                    <li><a class="dropdown-item" href="<%='/accepted_offers/calendar'%>">Schedules Calendar</a></li>
+                                    <li><a class="dropdown-item" href="<%='/companies'%>">Companies</a></li>
+                                    <li><a class="dropdown-item" href="<%='/colleges/'+current_user.college.id.to_s+'/courses'%>">Courses</a></li>
+                                    <li><a class="dropdown-item" href="<%='/colleges/'+current_user.college.id.to_s+'/students'%>">Student database</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                </ul>
+                                </li>
+                            <% end %>
+                        <% end %>
+                    </ul>
+                    </div>
+                </div>
+            </nav>
         </div>

@@ -1,0 +1,56 @@
+<div class='text-center justify-content-center'>    
+    <% if current_user.role=='individual' || current_user.role=='company' %>
+        <h1> Interview Schedules </h1>
+        <% if @accepted_individuals %>
+            <%= month_calendar(events: @accepted_individuals, attribute: :schedule) do |date, accepted_individuals | %>
+                <div class='day'>
+                    <%= date.day %>
+                    <% accepted_individuals.each do |a| %>
+                    <br>
+                        <% if current_user.role=='company' %>
+                            <%= button_to a.approval.job.name, '/companies/'+current_user.company.id.to_s+'/accepted_offers#'+a.id.to_s , class: 'button', method: :get %>
+                        <% elsif current_user.role=='individual' %>
+                            <%= button_to a.approval.job.name, '/individuals/'+current_user.individual.id.to_s+'/accepted_offers#'+a.id.to_s , class: 'button', method: :get %>
+                        <% end %>
+                        <%= a.schedule.strftime(' %I:%M %p') %>
+                    <% end %>
+                </div>
+            <% end %>
+        <% else %>
+            <%= month_calendar( attribute: :schedule) do |date, accepted_colleges | %>
+                    <div class='day'>
+                        <%= date.day %>
+                    </div>
+                <% end %>
+        <% end %>
+    <% end %>
+    <% if current_user.role=='company'%>
+        <br><br><br>
+    <% end %>
+
+    <% if current_user.role=='college' || current_user.role=='company' %>
+        <h1> Campus drive Schedules </h1>
+            <% if @accepted_colleges %>
+                <%= month_calendar(events: @accepted_colleges, attribute: :schedule) do |date, accepted_colleges | %>
+                    <div class='day'>
+                        <%= date.day %>
+                        <% accepted_colleges.each do |a| %>
+                        <br>
+                        <% if current_user.role=='company' %>
+                            <%= button_to a.approval.college.name, '/companies/'+current_user.company.id.to_s+'/accepted_offers#'+a.id.to_s , method: :get %>
+                        <% elsif current_user.role=='college' %>
+                            <%= button_to a.approval.company.name, '/companies/'+current_user.college.id.to_s+'/accepted_offers#'+a.id.to_s , method: :get %>
+                        <% end %>
+                            <%= a.schedule.strftime(' %I:%M %p') %>
+                        <% end %>
+                    </div>
+                <% end %>
+            <%else%>
+                <%= month_calendar( attribute: :schedule) do |date, accepted_colleges | %>
+                    <div class='day'>
+                        <%= date.day %>
+                    </div>
+                <% end %>
+            <% end %>
+    <%end %>
+</div>

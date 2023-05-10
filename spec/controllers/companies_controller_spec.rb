@@ -118,14 +118,14 @@ RSpec.describe CompaniesController, type: :controller do
                     get :edit, params: {id: user1.company.id}
                     expect(response).to render_template(:edit)
                 end
-                it 'doesn\'t render the edit template only if the user is college' do
+                it 'doesn\'t render the edit template if the user is college' do
                     sign_in user2
                     company1=create(:company, user: user1)
                     get :edit, params: {id: user1.company.id}
                     expect(flash[:notice]).to eq('Restricted Access')
                     expect(response).to redirect_to(root_path)
                 end
-                it 'doesn\'t render the edit template only if the user is individual' do
+                it 'doesn\'t render the edit template if the user is individual' do
                     sign_in user3
                     company1=create(:company, user: user1)
                     get :edit, params: {id: user1.company.id}
@@ -134,32 +134,5 @@ RSpec.describe CompaniesController, type: :controller do
                 end
             end
         end
-
-        describe 'POST #select_students' do
-            context 'check user access' do
-                it "can select a student when current user's role is company" do
-                    sign_in user1
-                    student=create(:student, course: course2)
-                    company=create(:company, user: user1)
-                    post :select_students , params: { student_id: student.id, company_id: company.id}
-                    expect(response).to have_http_status(:success)
-                end
-                it 'an individual cannot select students' do
-                    sign_in user3
-                    student=create(:student, course: course2)
-                    company=create(:company, user: user1)
-                    post :select_students , params: { student_id: student.id, company_id: company.id }
-                    expect(flash[:notice]).to eq('Restricted Access')
-                end
-                it 'a college cannot select students' do
-                    sign_in user2
-                    student=create(:student, course: course2)
-                    company=create(:company, user: user1)
-                    post :select_students , params: { student_id: student.id, company_id: company.id }
-                    expect(flash[:notice]).to eq('Restricted Access')
-                end
-            end
-        end
-
         
 end

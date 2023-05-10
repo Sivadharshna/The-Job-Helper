@@ -9,19 +9,23 @@ RSpec.describe CollegesController, type: :controller do
     
         describe 'GET #show' do
             context 'check user access' do
-                let!(:college) { create(:college, user: user2)}
+        
                 it "can access when college tries to view show" do
+                    college=create(:college, user: user2)                 
                     sign_in user2
                     get :show, params: {id: college.id}
                     expect(response).to render_template(:show)               
                 end 
                 it 'restricts access when individual tries to view the college show' do
+                    college=create(:college, user: user2)      
                     sign_in user3
                     get :show, params: {id: college.id}
                     expect(flash[:notice]).to eq('Restricted Access')
                     expect(response).to redirect_to(root_path)
                 end
-                it 'when a college access the show, it is rendered status 200' do
+                it 'when a company access the show, it is rendered status 200' do
+                    college=create(:college, user: user2) 
+                    company=create(:company, user: user1)     
                     sign_in user1
                     get :show, params: {id: college.id}    
                     expect(response).to render_template(:show)
@@ -101,23 +105,23 @@ RSpec.describe CollegesController, type: :controller do
 
         describe 'GET #edit' do
             context 'check user access' do
-                it 'renders the edit template only if the user is college' do
+                it 'renders the edit template if the user is college' do
                     sign_in user2
-                    college=create(:college, user: user1)
-                    get :edit, params: {id: user1.college.id}
+                    college=create(:college, user: user2)
+                    get :edit, params: {id: college.id}
                     expect(response).to render_template(:edit)
                 end
                 it 'doesn\'t render the edit template if the user is company' do
                     sign_in user1
-                    college=create(:college, user: user1)
-                    get :edit, params: {id: user1.college.id}
+                    college=create(:college, user: user2)
+                    get :edit, params: {id: college.id}
                     expect(flash[:notice]).to eq('Restricted Access')
                     expect(response).to redirect_to(root_path)
                 end
                 it 'doesn\'t render the edit template if the user is individual' do
                     sign_in user3
-                    college=create(:college, user: user1)
-                    get :edit, params: {id: user1.college.id}
+                    college=create(:college, user: user2)
+                    get :edit, params: {id: college.id}
                     expect(flash[:notice]).to eq('Restricted Access')
                     expect(response).to redirect_to(root_path)
                 end

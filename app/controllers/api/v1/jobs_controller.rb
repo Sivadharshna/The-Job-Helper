@@ -4,30 +4,62 @@ module Api
             before_action :doorkeeper_authorize!
 
 
-            before_action :check_user , only: [:new, :create, :edit, :update]
+            before_action :check_user , only: [:new, :create, :edit, :update, :destroy]
 
             def check_user
                 if current_user.present? && current_user.role!='company'
-                    flash[:notice]='Restricted Access'
-                    redirect_to root_path
+                    render json: 'Restricted Access', status: 403
+                end
+            end
+
+            before_action :check_user_view, only: [:index, :show, :specific]
+            
+            def check_user_view
+                if current_user.present? && current_user.role=='college'
+                    render json: 'Restricted Access', status: 403
                 end
             end
 
             #--------------------------------------------------------------------#
-            def index
-                    @jobs=Job.where(company_id: params[:company_id])
-                    if @jobs
-                        render json: @job, status: 200 #OK
-                    else
-                        render json: 'Not found', status: 404 # resource not found'
-                    end
-                    if current_user.role=='individual'
-                        @spc_jobs=Job.where( "minimum_educational_qualification LIKE ?",  "%"+current_user.individual.bachelors_degree+"%" ).or(Job.where("minimum_educational_qualification LIKE ?", "%Any degree%" ))
-                        if @spc_jobs
-                            render json: @spc_jobs, status: 200
+            def specific
+                if current_user.present?
+                    if current_user.role=='company' 
+                        @jobs=Job.where(company_id: current_user.company.id)
+                        if @jobs
+                            render json: @job, status: 200 #OK
+                        else
+                            render json: 'Not found', status: 404 # resource not found'
+                        end
+                    elsif current_user.role=='individual' 
+                        @jobs=Job.where( "minimum_educational_qualification LIKE ?",  "%"+current_user.individual.bachelors_degree+"%" ).or(Job.where("minimum_educational_qualification LIKE ?", "%Any degree%" ))
+                        if @jobs
+                            render json: @jobs, status: 200
                         else
                             render json: 'Oops! Sorry. Try searching all jobs', status: 404
+                        end
+                    else
+                        render json: 'Restricted Access', status: 403
                     end
+                else
+                    render json: 'No user', status: 302
+                end
+            end
+
+            def index
+                if current_user.present?
+                    if current_user.role=='individual'
+                        @jobs=Job.all
+                        if @jobs
+                            render json: @jobs, status: 200
+                        else
+                            render json: 'Not found', status: 404
+                        end
+                    else
+                        render json: 'Restricted Access', status: 403
+                    end
+                else
+                    redirect_to root_path
+                end
             end
             
             def show
@@ -40,24 +72,29 @@ module Api
             end
 
             def update
-                @job=Job.find_by(id: params[:id])
-                if @job
-                    if @job.company_id==params[:company_id].to_i
-                        if @job.update(job_params)
-                            render json: 'Updated Successfully'
+                if current_user.company.id==params[:company_id].to_i
+                    @job=Job.find_by(id: params[:id])
+                    if @job
+                        if @job.company_id==params[:company_id].to_i
+                            if @job.update(job_params)
+                                render json: 'Updated Successfully'
+                            else
+                                render json:  @job.errors  , status: 422
+                            end
                         else
-                            render json: @job.errors, status: 422
+                            render json: ' Restricted Access', status: 403 # forbidden access
                         end
                     else
-                        render json: ' Restricted Access', status: 403 # forbidden access
+                        render json:'Not found', status: 404 # resource not found
+                    end
                 else
-                    render json:'Not found', status: 404 # resource not found
+                    render json: 'Restricted Access', status: 403
                 end
             end
 
             def create
                 @job=Job.new(job_params)
-                @job.company_id=params[:company_id]
+                @job.company_id=current_user.company.id
                 if @job.save
                     render json: @job, status: 200 #OK
                 else
@@ -68,7 +105,7 @@ module Api
             def destroy
                 @job=Job.find_by(id: params[:id])
                 if @job
-                    if @job.company_id==params[:company_id].to_i
+                    if @job.company_id==current_user.company.id.to_i
                         if @job.destroy
                             render json: 'Deleted Successfully'
                         else
@@ -76,6 +113,7 @@ module Api
                         end
                     else
                         render json: 'Restricted Access', status: 403 #forbidden access
+                    end
                 else
                     render json: 'Not found', status: 404 # resource not found
                 end

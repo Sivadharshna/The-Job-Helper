@@ -2,61 +2,63 @@ module Api
     module V1
         class CoursesController < Api::ApplicationController
             before_action :doorkeeper_authorize!
-            ### 
-            #callbacks
+            
+            
             before_action :check_user
-            #callback methods
+            
             def check_user
                 if current_user.present? && current_user.role!='college'
-                    render json:'Unauthorised', status: 403
+                    render json:'Restriceted Access', status: 403
                 end
             end
 
-            ##########################################
             def index
-                @course=Course.where(college_id: params[:college_id])
-                render json: @course, status: 200
-            end
-            
-            def show
-                @course=Course.find_by(id: params[:id])
-                if @course
+                @course=Course.where(college_id: current_user.college.id)
+                if @courses
                     render json: @course, status: 200
                 else
-                    render json:{ error: 'Not found' }
+                    render json: 'Not found', status: 404
                 end
             end
-
+            
             def update
                 @course=Course.find_by(id: params[:id])
                 if @course
-                    if @course.update(course_params)
-                        render json: 'Updated Successfully'
+                    if @course.college.id==current_user.college.id
+                        if @course.update(course_params)
+                            render json: 'Updated Successfully'
+                        else
+                            render json: @course.errors
+                        end
                     else
-                        render json: @course.errors
+                        render json: 'Restricted Access', status: 403
                     end
                 else
-                    render json: { error: 'Not found' }
+                    render json:   'Not found' , status: 404
                 end
             end
 
             def create
                 @course=Course.new(course_params)
-                @course.college_id=params[:college_id]
+                @course.college_id=current_user.college.id
                 if @course.save
                     render json: @course, status: 200
                 else
-                    render json: @course.errors
+                    render json: { error: @course.errors}, status: 422
                 end   
             end
 
             def destroy
                 @course=Course.find_by(id: params[:id])
                 if @course
-                    if @course.destroy
-                        render json: 'Deleted Successfully'
+                    if @course.college_id=current_user.college.id
+                        if @course.destroy
+                            render json: 'Deleted Successfully'
+                        else
+                            render json: @course.errors
+                        end
                     else
-                        render json: @course.errors
+                        render json: 'Restricted Access', status: 403
                     end
                 else
                     render json: 'Not found'

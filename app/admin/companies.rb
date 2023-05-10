@@ -21,7 +21,7 @@ index do
     column :contact_no
     column :website_link
     column :email_id
-    actions
+    actions 
 end
 
 filter :name

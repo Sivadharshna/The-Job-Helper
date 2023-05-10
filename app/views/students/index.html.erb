@@ -1,5 +1,6 @@
         <div class="students">
             <h1> Students </h1>
+        <% if !(@students.empty? ) %>
             <table>
                 <tr>
                     <th>S_no</th>
@@ -9,8 +10,11 @@
                     <th>SSLC percentage</th>
                     <th>HSC/Diplomo</th>
                     <th>HSC/Diploma percentage</th>
-                    <th>Year of Graduation</th>
-                    <th>Placement_status</th>
+                    <th>Year of Graduation</th> 
+                    <% if current_user.role=='college'%>
+                        <th>Placement_status</th>
+                    <% end %>
+                    
                     <th></th>
                 </tr>
                 <div class="data">
@@ -26,15 +30,20 @@
                             <td><%= student.hsc_diplomo %></td>
                             <td><%= student.hsc_diplomo_percentage  %></td>
                             <td><%= student.graduation_year%></td>
-                            <% if current_user.role == 'company' %>
-                                <td><p> <%= button_to "Select", '/companies/'+@current_user.company.id.to_s+'/students/'+student.id.to_s+'/select_students' , method: :post %>   </p> </td>
-                            <% end %>
+                        
                             <% if current_user.role == 'college' %>
                                 <td><%= student.placement_status %></td>
-                                <td><p> <%= button_to "Edit", '/colleges/'+student.course.college_id.to_s+'/students/'+student.id.to_s+'/edit/' , method: :get %> <br> <%= button_to "Delete" , 'students/'+student.id.to_s , method: :delete %>   </p> </td>
+                                <td><p> <%= button_to "Edit", '/courses/'+student.course.id.to_s+'/students/'+student.id.to_s+'/edit/' , method: :get %> <br>
+                                <%= button_to "Delete" , '/courses/'+student.course.id.to_s+'/students/'+student.id.to_s , method: :delete %>   </p> </td>
+                            <% end %>
+                            <% if current_user.role=='company'%>
+                                <td><%= button_to "Select", '/college_applications/'+params[:college_application_id]+'/students/'+student.id.to_s+'/appoint' , method: :post %></td> 
                             <% end %>
                         </tr>
                     <% end %>
                 </div>
             </table>
+        <% else %>
+            <h4> No students found! </h4>
+        <% end %>
         </div>

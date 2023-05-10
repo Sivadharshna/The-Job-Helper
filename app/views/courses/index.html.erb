@@ -1,0 +1,31 @@
+            <div class="container">
+                
+                <div class= "comp_opt">
+                    <h4>Course Details</h4>
+                    <%= button_to 'Add courses' , '/colleges/'+current_user.college.id.to_s+'/courses/new' ,class: 'btn btn-primary' , method: :get %>
+                </div>
+                
+                <% if !@courses.empty? %>
+                    <ul>
+                    <% @courses.each do |course| %>
+                        <li class="row">
+                            <div class='col-md-6'>
+                            <p><%= course.name %></p>
+                            </div>
+                            <div class="col-md-2">
+                                <%= button_to 'Edit' , '/colleges/'+course.college_id.to_s+'/courses/'+course.id.to_s+'/edit' ,class: 'btn btn-primary' , method: :get %>
+                            </div>
+                            <div class="col-md-2">
+                                <%= button_to 'Delete' , '/colleges/'+course.college_id.to_s+'/courses/'+course.id.to_s ,class: 'btn btn-danger' , method: :delete %>
+                            </div>
+                            <div class="col-md-2">
+                                <%= button_to 'Add Students' , '/courses/'+course.id.to_s+'/students/new' ,class: 'btn btn-primary' , method: :get %>
+                            </div>
+                            <br>
+                        </li>
+                    <% end %>
+                    </ul>
+                <% else %>
+                    <h4> No courses found! Please add courses </h4>
+                <% end %>
+            </div>

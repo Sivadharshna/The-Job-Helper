@@ -48,36 +48,6 @@
 }
 
 .profile{
-    padding-left: 10px;
-    padding-right:10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    background-color: white;
-    padding-bottom:20px;
-    padding-top:20px; 
-    margin-bottom:20px;  
+    text-align: center;
+    font-size:larger;
  }
-.profile h1{
-    padding-top:10px;
-    text-align:center;
-    color: rgb(135, 0, 83);
-    text-transform: uppercase;
-}
-.profile h5{
-    color:black;
-    text-transform: uppercase;
-    font-weight:bolder;
-    font-size: medium;
-}
-.profile p{
-    color:midnightblue;
-    font-size:small;
-    font-weight: bold;
-}
-.profile form.button_to .edit{
-    padding:10px 10px;
-    background-color: rgb(135, 0, 83);
-    text-align:center;
-    text-transform: uppercase;
-    color: white ;
-}

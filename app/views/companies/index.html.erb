@@ -1,14 +1,21 @@
             <div class="Companies_list">
+                <h1> Companies </h1>
                 <br>
-                <% @companies.each do |company| %>
-                    <div class="one">
-                        <%= company.name %></h4>
-                        <p><%= company.address %> LPA</p>
-                        <p><%= company.contact_no %></p>
-                        <div class="option">
-                            <%= button_to 'View Details' , '/companies/'+company.id.to_s.to_s ,class: 'details' , method: :get %>
-                            <%= button_to 'Apply' , '/companies/'+company.id.to_s+'/college_applications/new' ,class: 'details' , method: :post %>
+                <% if !@companies.empty? %>
+                    <% @companies.each do |company| %>
+                        <div class="one">
+                            <%= company.name %></h4>
+                            <p><%= company.address %> LPA</p>
+                            <p><%= company.contact_no %></p>
+                            <div class="option">
+                                <%= button_to 'View Details' , '/companies/'+company.id.to_s.to_s ,class: 'details' , method: :get %>
+                                <% if current_user.role=='college'%>
+                                    <%= button_to 'Apply' , '/companies/'+company.id.to_s+'/college_applications/new' ,class: 'details' , method: :post %>
+                                <% end %>
+                            </div>
                         </div>
-                    </div>
+                    <% end %>
+                <% else %>
+                    <p> Oops! We are empty now, Try again later </p>
                 <% end %>
             </div>

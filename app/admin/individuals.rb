@@ -15,8 +15,6 @@ ActiveAdmin.register Individual do
   #   permitted
   # end
 
-  scope :having_accepted_offer
-  scope :applied_for_jobs
 
 index do
     column :id

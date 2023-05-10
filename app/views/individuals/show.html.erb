@@ -1,22 +1,29 @@
             <div class="individual">
-                
-                <h1>Profile</h1>
-                <h5>Name: </h5><p><%= @individual.name %></p>
-                <h5>Address: </h5><p><%= @individual.address %></p>
-                <h5>Contact Number: </h5><p> <%= @individual.contact_no %> </p>
-                <h5>Email Id: </h5><p><%= @individual.email_id %></p>
-                <h5>Age: </h5><p><%= @individual.age %></p>
-                <h5>Experience: </h5><p><%= @individual.experience==nil ? "Fresher" : @individual.experience %></p>
-                <h5>SSLC percentage: </h5><p><%= @individual.sslc_percentage %></p>
-                <h5>HSC/Diplomo: </h5><p><%= @individual.hsc_diplomo %></p>
-                <h5>HSC/Diplomo percentage: </h5><p><%= @individual.hsc_diplomo_percentage %></p>
-                <h5>Bachelor's degree: </h5><p> <%= @individual.bachelors_degree %> </p>
-                <% unless  @individual.masters_degree!=nil %>
-                    <h5>Master's degree: </h5><p> <%= @individual.masters_degree %> </p>
-                <% end%>
-                <br>
-                 
-                <% if current_user.role == 'individual'%>
-                    <%= button_to "Edit Profile", @individual.id.to_s+'/edit' ,class: 'edit', method: :get %>
+                <% if @individual %>
+                    <h1>Profile</h1>
+                    <h5>Name: </h5><p><%= @individual.name %></p>
+                    <h5>Address: </h5><p><%= @individual.address %></p>
+                    <h5>Contact Number: </h5><p> <%= @individual.contact_no %> </p>
+                    <h5>Email Id: </h5><p><%= @individual.email_id %></p>
+                    <h5>Age: </h5><p><%= @individual.age %></p>
+                    <h5>Experience: </h5><p><%= @individual.experience==nil ? "Fresher" : @individual.experience %></p>
+                    <h5>SSLC percentage: </h5><p><%= @individual.sslc_percentage %></p>
+                    <h5>HSC/Diplomo: </h5><p><%= @individual.hsc_diplomo %></p>
+                    <h5>HSC/Diplomo percentage: </h5><p><%= @individual.hsc_diplomo_percentage %></p>
+                    <h5>Bachelor's degree: </h5><p> <%= @individual.bachelors_degree %> </p>
+                    <% unless  @individual.masters_degree!=nil %>
+                        <h5>Master's degree: </h5><p> <%= @individual.masters_degree %> </p>
+                    <% end%>
+
+                    <% if @individual.resume.attached? %>
+                        <h5>Resume: </h5> <p> <%= link_to 'Resume.pdf', main_app.rails_blob_path(@individual.resume , disposition: 'inline') %> </p>
+                    <% end %>
+                    <br>
+                    
+                    <% if current_user.role == 'individual'%>
+                        <%= button_to "Edit Profile", @individual.id.to_s+'/edit' ,class: 'edit', method: :get %>
+                    <% end %>
+                <% else %>
+                    <h1> Profile not found </h1>
                 <% end %>
             </div>

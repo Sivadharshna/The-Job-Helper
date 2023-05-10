@@ -1,18 +1,17 @@
 class CompaniesController < ApplicationController
 
 
-    ####
-    #callbacks
-    before_action :check_user , only: [:new, :create, :edit, :update, :select_students]
+    before_action :authenticate_user!
+    before_action :check_user , only: [:new, :create, :edit, :update]
     before_action :check_user_index, only: [:index]
 
     private def check_user_index
         if current_user.present? && current_user.role!='college'
             redirect_to root_path
         end
-    end
+    end 
 
-    #callback methods
+    
     private def check_user
         if current_user.present? && current_user.role!='company'
             flash[:notice]='Restricted Access'
@@ -21,14 +20,32 @@ class CompaniesController < ApplicationController
     end
 
 
-    ####
     def index
         @companies=Company.all
     end
     
     def show
         if current_user.present?
-            @company=Company.find(params[:id])
+            if current_user.role=='company'
+                if current_user.company.id==params[:id].to_i
+                    @company=Company.find(params[:id])
+                    if @company
+                        render :show
+                    else
+                        flash[:notice]='Not found'
+                    end
+                else
+                    flash[:notice]='Restricted Access'
+                    redirect_to root_path
+                end
+            else
+                @company=Company.find(params[:id])
+                if @company
+                    render :show
+                else
+                    flash[:notice]='Not found'
+                end
+            end
         else
             redirect_to root_path
         end
@@ -36,24 +53,45 @@ class CompaniesController < ApplicationController
 
     def edit
         if current_user.present?
-            @company=Company.find(params[:id])
+            if current_user.role=='company' && current_user.company.id==params[:id].to_i
+                @company=Company.find(params[:id])
+                if @company
+                    render :edit
+                else
+                    flash[:notice]='No profile exists'
+                    redirect_to root_path
+                end
+            else
+                flash[:notice]='Restricted Access'
+                redirect_to root_path
+            end
         else
             redirect_to root_path
         end
     end
+    
     def update
         if current_user.present?
-            @company=Company.find(params[:id])
-            if @company.update(company_params)    
-                flash[:notice]='Updated Sucessfully!'
-                redirect_to '/companies/'+@company.id.to_s
-            else
-                if @company.errors.any? 
-                    @company.errors.full_messages.each do |message|
-                        flash[:notice]=message
+            if current_user.role=='company' && current_user.company.id==params[:id].to_i
+                @company=Company.find(params[:id])
+                if @company
+                    if @company.update(company_params)    
+                        flash[:notice]='Updated Sucessfully!'
+                        redirect_to '/companies/'+@company.id.to_s
+                    else
+                        if @company.errors.any? 
+                            @company.errors.full_messages.each do |message|
+                                flash[:notice]=message
+                            end
+                        end
+                        render :edit, status: :unprocessable_entity
                     end
+                else
+                    flash[:notice]='Not found'
                 end
-                render :edit, status: :unprocessable_entity
+            else
+                flash[:notice]='Restricted Access'
+                redirect_to root_path
             end
         else
             redirect_to root_path
@@ -91,34 +129,7 @@ class CompaniesController < ApplicationController
     end
 
     private def company_params
-        params.require(:company).permit(:name, :description, :address, :website_link, :contact_no, :email_id)
-    end
-
-    def select_students
-        @company=Company.find(current_user.company.id)
-        if @company
-            @student=Student.find(params[:student_id])
-            
-            if check_student_not_selected(@company , @student)==true
-                if @company.students << @student
-                    flash[:notice] ='Selected Successfully'
-                else
-                    flash[:notice] ='Please try Again'
-                end
-            else
-                flash[:notice] = 'Already selected'
-            end
-        else
-
-        end
-    end
-
-    private def check_student_not_selected(company, student)
-        if company.students.exists?(student.id)==true
-            return false
-        else
-            return true
-        end
+        params.require(:company).permit(:name, :photo, :description, :address, :website_link, :contact_no, :email_id)
     end
 
 end

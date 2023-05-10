@@ -13,6 +13,15 @@ ActiveAdmin.register Permission do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
+
+  form do |f|
+    f.inputs "Permission" do
+      f.input :status, as: :select, collection: ["Permitted", "Denied"]
+    end
+    f.actions
+  end
+
+  config.remove_action_item (:new)
   
   permit_params :status
 

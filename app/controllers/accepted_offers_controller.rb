@@ -1,11 +1,8 @@
 class AcceptedOffersController < ApplicationController
-    
-    ###
-    #callbacks
-    before_action :check_user, only: [:new]
-    
+    before_action :authenticate_user!
 
-    #callback methods
+    before_action :check_user, only: [:new, :create]
+    
     def check_user
         if current_user.present? && current_user.role!='company'
         flash[:notice]='Restricted Access'
@@ -13,70 +10,75 @@ class AcceptedOffersController < ApplicationController
         end
     end
 
-
-    ###
-=begin
-    
-        
-            if current_user.role=='individual'
-                @accepted_offer=IndividualApplication.joins(:accepted_offer).where(individual_id: params[:individual_id])
-                #@individual_applications=IndividualApplication  .where(individual_id: current_user.individual.id)
-                #@accepted_offers=AcceptedOffer.all.where(approval_type: 'IndividualApplication')   
-            elsif current_user.role=='company'
-                #@accepted_individuals=Job.joins(individual_applications: :accepted_offer).where(company_id: params[:company_id])
-                @jobs=Job.where(company_id: params[:company_id])
-                @accepted_individuals=IndividualApplication.joins(:accepted_offer).where(job_id: @jobs)
-                @accepted_colleges=CollegeApplication.joins(:accepted_offer).where(company_id:params[:company_id])
-            elsif current_user.role=='college'
-                @accepted_offer=CollegeApplication.joins(:accepted_offer).where(college_id: params[:college_id])
-
-            end
-=end
     def index
         if current_user.present?
             if current_user.role=='company'
-                @jobs=Job.where(company_id: params[:company_id])
-                @individual_applications=IndividualApplication.where(job_id: @jobs)
-                sql1='select accepted_offers.id as Id, individuals.name as Individual , jobs.name as Job, companies.name as Company, jobs.salary, accepted_offers.schedule FROM accepted_offers INNER JOIN individual_applications ON individual_applications.id=accepted_offers.approval_id INNER JOIN jobs ON jobs.id=individual_applications.job_id INNER JOIN individuals ON individuals.id=individual_applications.id INNER JOIN companies ON jobs.company_id=companies.id WHERE companies.id='+params[:company_id].to_s
-                @accepted_individuals=AcceptedOffer.connection.select_all(sql1)
-                sql2='select colleges.id as Id, colleges.name as College, companies.name as Company, accepted_offers.schedule FROM accepted_offers INNER JOIN college_applications ON college_applications.id=accepted_offers.approval_id INNER JOIN colleges ON colleges.id=college_applications.college_id INNER JOIN companies ON college_applications.company_id=companies.id WHERE companies.id='+params[:company_id].to_s
-                @accepted_colleges=AcceptedOffer.connection.select_all(sql2)
+                @individual_applications=IndividualApplication.joins(:job).where(job: {company_id: current_user.company.id} )
+                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications))
+
+                @college_applications=CollegeApplication.where(company_id: current_user.company.id)
+                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications))
+                flash[:notice]='The schedules will disappear after 10 days from  their scheduled date'
             elsif current_user.role=='individual'
-                sql='select individuals.name as Individual , jobs.name as Job, companies.name as Company, jobs.salary, accepted_offers.schedule FROM accepted_offers INNER JOIN individual_applications ON individual_applications.id=accepted_offers.approval_id INNER JOIN jobs ON jobs.id=individual_applications.job_id INNER JOIN individuals ON individuals.id=individual_applications.id INNER JOIN companies ON jobs.company_id=companies.id WHERE individuals.id='+params[:individual_id].to_s
-                @accepted_individuals=AcceptedOffer.connection.select_all(sql1)
+                @individual_applications=IndividualApplication.where(individual_id: current_user.individual.id )
+                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications))
+                flash[:notice]='The schedules will disappear after 10 days from  their scheduled date'
+            elsif current_user.role=='college'
+                @college_applications=CollegeApplication.where(college_id: current_user.college.id)
+                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications))
+                flash[:notice]='The schedules will disappear after 10 days from  their scheduled date'
             end
         end  
     end
 
     def new
         @accepted_offer=AcceptedOffer.new
-        #if current_user.present? && current_user.role=='company'
-        #else
-        #    redirect_to root_path
-        #end
     end
     def create
         @accepted_offer=AcceptedOffer.new(accepted_params)
-        if params[:application_type] == 'individual_applications'
-            @accepted_offer.approval_id=params[:application_id]
-            @accepted_offer.approval_type='IndividualApplication'
-        elsif params[:application_type] == 'college_applications'
-            @accepted_offer.approval_id=params[:application_id]
-            @accepted_offer.approval_type='CollegeApplication' 
+        if params[:approval_type]=='individual_applications'
+            @individual_application=IndividualApplication.find(params[:approval_id])
+            @accepted_offer.approval=@individual_application
+        elsif params[:approval_type]='college_applications'
+            @college_application=CollegeApplication.find(params[:approval_id])
+            @accepted_offer.approval=@college_application
         end
         if @accepted_offer.save
-            if params[:application_type] == 'individual_applications'
-                @individual_application=IndividualApplication.find(params[:application_id])
+            if @accepted_offer.approval_type=='IndividualApplication'
                 @individual_application.update(status: 'Approved')
-            elsif params[:application_type] == 'college_applications'
-                @college_application=CollegeApplication.find(params[:application_id])
+            elsif @accepted_offer.approval_type=='CollegeApplication'
                 @college_application.update(status: 'Approved')
             end
-            flash[:notice]="Application Approved!"
+            flash[:notice]='Saved Successfully'
             redirect_to root_path
         else
+            if @accepted_offer.errors.any?
+                @accepted_offer.errors.full_messages.each do |message|
+                    flash[:notice]=message
+                end
+            end
             render :new, status: :unprocessable_entity
         end
+    end
+
+    def calendar
+        if current_user.present?
+            if current_user.role=='company'
+                @individual_applications=IndividualApplication.joins(:job).where(job: {company_id: current_user.company.id} )
+                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications))
+
+                @college_applications=CollegeApplication.where(company_id: current_user.company.id)
+                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications))
+                
+            elsif current_user.role=='individual'
+                @individual_applications=IndividualApplication.where(individual_id: current_user.individual.id )
+                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications))
+
+            elsif current_user.role=='college'
+                @college_applications=CollegeApplication.where(college_id: current_user.college.id)
+                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications))
+            end
+        end   
     end
 
     private def accepted_params

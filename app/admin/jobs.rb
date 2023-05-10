@@ -22,6 +22,8 @@ ActiveAdmin.register Job do
       actions
     end
 
+    config.remove_action_item (:new)
+
     filter :individuals
     filter :name
     filter :company

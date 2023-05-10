@@ -2,45 +2,47 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 .students{
-    padding-top: 125px;
     padding-left: 10px;
 }
-table{
-    padding: 5px 10px;
-    text-align: center;
-      
-}
 
-th{
-    background-color:rgb(81, 197, 131);
-    color: white;
-    width:fit-content;
-    height: 50px;
-    border: 2px solid white;  
-}
+.students{
+    table{
+        padding: 5px 10px;
+        text-align: center;
+        
+    }
 
-td{
-    width:500px;
-    background-color: ghostwhite;
-    color: black;
-    border: 2px solid white;  
-}            
-.student_new{
-    align-items: center;
-    text-align: center;
-    padding: 20px 20px;
-}
-.student_new h2{
-    font-weight:bold;
-}
+    th{
+        background-color:rgb(81, 197, 131);
+        color: white;
+        width:fit-content;
+        height: 50px;
+        border: 2px solid white;  
+    }
 
-.student_new form label{
-    font-size:medium;
-    font-weight: normal;
-}
+    td{
+        width:500px;
+        background-color: ghostwhite;
+        color: black;
+        border: 2px solid white;  
+    }            
+    .student_new{
+        align-items: center;
+        text-align: center;
+        padding: 20px 20px;
+    }
+    .student_new h2{
+        font-weight:bold;
+    }
 
-.student_new input[type="submit"]{
-    padding:10px 10px;
-    background-color:rgb(135, 0, 83);
-    color:white;
+    .student_new form label{
+        font-size:medium;
+        font-weight: normal;
+    }
+
+    .student_new input[type="submit"]{
+        padding:10px 10px;
+        background-color:rgb(135, 0, 83);
+        color:white;
+    }
 }

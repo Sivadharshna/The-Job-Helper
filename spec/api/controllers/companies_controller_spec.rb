@@ -12,8 +12,7 @@ RSpec.describe Api::V1::CompaniesController, type: :request do
     let!(:user2_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user2.id)}
     let!(:user3_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user3.id)}
     
-    let!(:college2) {create(:college, user: user2)}
-    let!(:course2) { create(:course, college: college2) }
+    
     
         describe "GET api/companies #index" do
             context 'check user access' do
@@ -83,26 +82,5 @@ RSpec.describe Api::V1::CompaniesController, type: :request do
         end
 
         
-        describe 'POST #select_students' do
-            context 'check user access' do
-                it "can select a student when current user's role is company" do
-                    company = create(:company, user: user1, name: 'Infosys India', email_id: 'infoindia@gmail.com',  contact_no: '9876543212')
-                    student = create(:student, course: course2)
-                    post '/api/v1/companies/'+company.id.to_s+'/students/'+student.id.to_s+'/select_students' , params: { access_token: user1_token.token, company: company.attributes, format: :json }
-                    expect(response).to have_http_status(200)
-                end
-                it 'an individual cannot select students' do
-                    company = create(:company, user: user1, name: 'Infosys India', email_id: 'infoindia@gmail.com',  contact_no: '9876543212')
-                    student = create(:student, course: course2)
-                    post '/api/v1/companies/'+company.id.to_s+'/students/'+student.id.to_s+'/select_students' , params: { access_token: user3_token.token, company: company.attributes, format: :json }
-                    expect(response).to have_http_status(403)
-                end
-                it 'a college cannot select students' do
-                    company = create(:company, user: user1, name: 'Infosys India', email_id: 'infoindia@gmail.com',  contact_no: '9876543212')
-                    student = create(:student, course: course2)
-                    post '/api/v1/companies/'+company.id.to_s+'/students/'+student.id.to_s+'/select_students'  , params: { access_token: user2_token.token, company: company.attributes, format: :json }
-                    expect(response).to have_http_status(403)
-                end
-            end
-        end
+        
 end

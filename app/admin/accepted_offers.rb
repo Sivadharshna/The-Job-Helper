@@ -19,4 +19,10 @@ index do
   column :approval
   actions
 end
+
+scope :all
+scope :college_applications
+scope :individual_applications
+
+config.remove_action_item (:new)
 end

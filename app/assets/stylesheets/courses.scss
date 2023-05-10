@@ -8,10 +8,11 @@
 }
 
 .courses_list .one{
-    padding: 10px 10px;
+    padding-top: 30px;
+    
     background-color:white;
     height:50px;
-    width: 90%;
+    width: 80%;
     float: left;
     display: flex;
     color:black;
@@ -44,11 +45,12 @@
 }
 
 .courses_list .comp_opt{
-    width:90%;
-    height: 50px;
+    width:80%;
+    height: 70px;
     padding :5px;
     justify-content:space-between;
     display: flex;
+    
 }
 
 .courses_list .comp_opt form.button_to{
@@ -69,7 +71,7 @@
 
 .new_course form label{
     font-size:medium;
-    font-weight: normal;
+    font-weight: normal; 
 }
 
 .new_course input[type="submit"]{

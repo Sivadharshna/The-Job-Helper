@@ -25,6 +25,11 @@
                 <br>
                 <%= f.text_field :website_link %>
                 <br><br>
+                <%= f.label :photo, 'Upload a picture here' %>
+                <br>
+                <%= f.file_field :photo %>
+                <br><br>
+
                 <%= f.submit %>
             <% end %>
         </main>

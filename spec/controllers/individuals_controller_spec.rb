@@ -58,6 +58,7 @@ RSpec.describe  IndividualsController, type: :controller do
                 let(:individual) { create(:individual, user: user1, name: 'Arunmohan', email_id: 'infoindia@gmail.com',  contact_no: '9876543212')}
                 it "can update a individual when the current user's role is individual" do
                     sign_in user3
+                    individual=create(:individual, user: user3)
                     put :update, params: { id: individual.id, individual: { name: 'Mohan' } }
                     expect(flash[:notice]).to eq('Profile Updated successfully !')
                     individual.reload
@@ -104,21 +105,21 @@ RSpec.describe  IndividualsController, type: :controller do
             context 'check user access' do
                 it 'renders the edit template only if the user is individual' do
                     sign_in user3
-                    individual1=create(:individual, user: user1)
-                    get :edit, params: {id: user1.individual.id}
+                    individual=create(:individual, user: user3)
+                    get :edit, params: {id: individual.id}
                     expect(response).to render_template(:edit)
                 end
                 it 'doesn\'t render the edit template only if the user is college' do
                     sign_in user2
-                    individual1=create(:individual, user: user1)
-                    get :edit, params: {id: user1.individual.id}
+                    individual=create(:individual, user: user1)
+                    get :edit, params: {id: individual.id}
                     expect(flash[:notice]).to eq('Restricted Access')
                     expect(response).to redirect_to(root_path)
                 end
                 it 'doesn\'t render the edit template only if the user is company' do
                     sign_in user1
-                    individual1=create(:individual, user: user1)
-                    get :edit, params: {id: user1.individual.id}
+                    individual=create(:individual, user: user1)
+                    get :edit, params: {id: individual.id}
                     expect(flash[:notice]).to eq('Restricted Access')
                     expect(response).to redirect_to(root_path)
                 end

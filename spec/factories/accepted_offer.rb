@@ -1,7 +1,8 @@
 FactoryGirl.define do
 
     factory :accepted_offer do
-        schedule Time.now+1.day
-        individual_application  
+        approval_type 'IndividudalApplication'
+        approval_id 2 
+        schedule Time.now+360.day
     end
 end

@@ -68,4 +68,6 @@ gem 'doorkeeper'
 
 gem 'rails-controller-testing'
 
+gem "simple_calendar", "~> 2.4"
+
 

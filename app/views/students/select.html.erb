@@ -1,0 +1,42 @@
+        <div class="students">
+            <h1> Students </h1>
+        <% if !@students.empty? %>
+            <table>
+                <tr>
+                    <th>S_no</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>CGPA</th>
+                    <th>SSLC percentage</th>
+                    <th>HSC/Diplomo</th>
+                    <th>HSC/Diploma percentage</th>
+                    <th>Year of Graduation</th> 
+                    <th>Placement_status</th>
+                    <th></th>
+                </tr>
+                <div class="data">
+                    <% count=0 %>
+                    <% @students.each  do |student| %>
+                        <tr>
+                            <% count+=1%>
+                            <td> <%=count %> </td>
+                            <td><%= student.name %></td>
+                            <td><%= student.course.name %></td>
+                            <td><%= student.cgpa %></td>
+                            <td><%= student.sslc_percentage %></td>
+                            <td><%= student.hsc_diplomo %></td>
+                            <td><%= student.hsc_diplomo_percentage  %></td>
+                            <td><%= student.graduation_year%></td>
+                        
+                            <% if current_user.role == 'college' %>
+                                <td><%= student.placement_status %></td>
+                                <td><p> <%= button_to "Select", '/companies/'+params[:company_id].to_s+'/students/'+student.id.to_s+'/select_students' , method: :post %>   </p> </td>
+                            <% end %>
+                        </tr>
+                    <% end %>
+                </div>
+            </table>
+        <% else %>
+            <h4> No students found! Try adding some </h4>
+        <% end %>
+        </div>

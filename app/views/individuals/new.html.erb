@@ -59,6 +59,11 @@
                 <%= f.text_field :address %>
                 <br><br>
 
+                <%= f.label :resume, 'Upload your resume here' %>
+                <br>
+                <%= f.file_field :resume %>
+                <br><br>
+
                 <%= f.submit %>
             <% end %>
         </main>

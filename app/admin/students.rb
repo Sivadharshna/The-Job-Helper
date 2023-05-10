@@ -25,6 +25,8 @@ ActiveAdmin.register Student do
        actions
     end
 
+    config.remove_action_item (:new)
+
     filter :course
     filter :hsc_diplomo
     filter :graduation_year

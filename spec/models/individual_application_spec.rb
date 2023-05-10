@@ -1,10 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe IndividualApplication, type: :model do
+
+    let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
+
+
     describe 'Default value' do
         context 'for status' do
             it 'checks whether the default attribut is set' do
-                iappl=build(:individual_application)
+                individual=create(:individual,user: user3)
+                iappl=build(:individual_application, individual: individual)
                 #iappl.validate
                 expect(iappl.status).to eq('Under Progress')
             end

@@ -2,63 +2,77 @@ module Api
     module V1
         class IndividualsController < Api::ApplicationController
             before_action :doorkeeper_authorize!
-            ####
-            #callbacks
+            
             before_action :check_user , only: [:new, :create, :edit, :update]
 
-            #callback methods
+            before_action :check_user_show, only: [:show]
+
+            def check_user_show
+                if current_user.present? && current_user.role=='college'
+                    render json: 'Restricted Access', status: 403
+                end
+            end
+        
             def check_user
                 if current_user.present? && current_user.role!='individual'
                     render json: 'Restricted Access', status: 403
-                    redirect_to root_path
                 end
             end
             
             def show
-                @individual=Individual.find_by(id: params[:id])
-                if @individual
-                    render json: @individual, status: 200
+                if current_user.role=='individual' && current_user.individual.id==params[:id].to_i
+                    @individual=Individual.find_by(id: params[:id])
+                    if @individual
+                        render json: @individual, status: 200
+                    else
+                        render json: 'Not found' , status: 404
+                    end 
+                elsif current_user.role=='company' 
+                    @company=Company.find(current_user.company.id)
+                    @individual=Individual.find(params[:id])
+                    if @individual.individual_applications.where(jobs: @company.jobs)
+                        render json: @individual , status: 200
+                    else
+                        render json: 'Restricted Access', status: 403
+                    end
                 else
-                    render json:{ error: 'Not found' }, status: 404
+                    render json: 'Restricted Access', status: 403
                 end
             end
 
             def update
-                @individual=Individual.find_by(id: params[:id])
-                if @individual
-                    if @individual.update(individual_params)
-                        render json: 'Updated Successfully'
+                if current_user.role=='individual' && current_user.individual.id==params[:id].to_i
+                    @individual=Individual.find_by(id: params[:id])
+                    if @individual
+                        if @individual.update(individual_params)
+                            render json: 'Updated Successfully'
+                        else
+                            render json: @individual.errors, status: 422
+                        end
                     else
-                        render json: @individual.errors, status: 422
+                        render json:  'Not found' , status: 404
                     end
                 else
-                    render json: { error: 'Not found' }, status: 404
+                    render json: 'Restricted Access', status: 403
                 end
             end
 
             def create
-                @individual=Individual.new(individual_params)
-                @individual.user_id=current_user.id
-                if @individual.save
-                    render json: @individual, status: 200
-                else
-                    render json: @individual.errors, status: 422
-                end   
-            end
-
-            def destroy
-                @individual=Individual.find_by(id: params[:id])
-                if @individual
-                    if @individual.destroy
-                        render json: 'Deleted Successfully', status: 204
+                if current_user.present?
+                    @individual=Individual.new(individual_params)
+                    @individual.user_id=current_user.id
+                    if @individual.save
+                        @permission=Permission.new
+                        @permission.user_id=current_user.id
+                        @permission.save
+                        render json: @individual, status: 200
                     else
-                        render json: 'Oops! Something went wrong', status: 500 
-                    end
+                        render json: @individual.errors, status: 422
+                    end 
                 else
-                    render json: 'Not found', status: 404
-                end
+                    render json: 'No user', status: 302 
+                end 
             end
-
 
             private def individual_params
                 params.require(:individual).permit(:name, :sslc_percentage, :hsc_diplomo, :hsc_diplomo_percentage, :experiece, :address, :age,  :bachelors_degree, :masters_degree, :contact_no, :email_id)

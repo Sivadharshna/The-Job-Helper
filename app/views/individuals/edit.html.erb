@@ -72,6 +72,17 @@
                 <%= f.text_field :address %>
                 <br><br>
 
+                <%= f.label :resume, 'Update your resume?' %>
+                <br>
+                <br>
+                <% if @individual.resume.attached? %>
+                     <%= link_to 'My Resume.pdf', main_app.rails_blob_path(@individual.resume , disposition: 'inline') %>
+                <% end %>
+                <br>
+                <br>
+                <%= f.file_field :resume %>
+                <br><br>
+
                 <%= f.submit %>
             <% end %>
         </main>

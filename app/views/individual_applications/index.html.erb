@@ -1,24 +1,35 @@
-            <div class="individual_applications_list">
+            <div class="container">
                 
-                
+                <h1> Your Applications </h1>
                 <br>
-                <% @individual_applications.each do |individual_application| %>
-                    <div class="one">
-                        <h4> <%= individual_application.job.name %> </h4>
-                        <p> Company : <%= individual_application.job.company.name %> </p>
-                        <p> Applicant Name: <%= individual_application.individual.name %></p>
-                        <p> Salary : <%= individual_application.job.salary %> LPA</p>
-                        <p> Mode of Work : <%= individual_application.job.mode %></p>
-                        <p> Status :  <%= individual_application.status%></p>
-                        
+                <% if !@individual_applications.empty? %>
+                    <% @individual_applications.each do |individual_application| %>
+                        <div class="row shadow p-3 mb-5 bg-body-tertiary rounded">
+                            <div class='container'>
+                                <h5> <%= individual_application.job.name %> </h5>
+                                <p> Company : <%= individual_application.job.company.name %> </p>
+                                <% if current_user.role=='company'%>
+                                    <p> Applicant Name: <%= individual_application.individual.name %></p>
+                                <% end %>
+                                <p> Salary : <%= individual_application.job.salary %> LPA</p>
+                                <p> Mode of Work : <%= individual_application.job.mode %></p>
+                                <p> Status :  <%= individual_application.status%></p>
+                                
 
-                            <div class=öption>
-                                    <% if current_user.role=='company'%> 
-                                        <%= button_to 'View Profile' , '/individuals/'+individual_application.individual.id.to_s ,class: 'access' , method: :get %>
-                                        <%= button_to 'Approve' , 'individual_applications/'+individual_application.id.to_s+'/accepted_offers/new' ,class: 'access' , method: :get %>
-                                    <% end %>
+                                    <div class=öption>
+                                            <% if current_user.role=='company'%> 
+                                                <%= button_to 'View Profile' , '/individuals/'+individual_application.individual.id.to_s ,class: 'access' , method: :get %>
+                                                <%= button_to 'Approve' , 'individual_applications/'+individual_application.id.to_s+'/accepted_offers/new' ,class: 'access' , method: :get %>
+                                            <% end %>
+                                    </div>
                             </div>
-
-                    </div>
-                <% end %>
+                        </div>
+                    <% end %>
+                <% else %>
+                    <% if current_user.role=='individual'%>
+                        <h4> You have not applied for any jobs yet! Please check for jobs and grab your oppurtunity soon </h4>
+                    <% elsif current_user.role=='company' %>
+                        <h4> No Applications found </h4>
+                    <% end %>
+                <% end %>    
             </div>

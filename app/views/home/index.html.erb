@@ -1,47 +1,81 @@
-        <div class = "home">
-        <%=current_user.present? ? current_user.email : 'Please sign in' %>
+<div class='home'>
+    <div class='container text-center'>
+    <div class='profile'>
+        <div class="row row-no-gutters">
+            <% if current_user.role=='company' %>
+                <% if current_user.company.photo.attached? %>
+                    <img src="<%= url_for(current_user.company.photo) %>" class="img-fluid rounded mx-auto d-block img-thumbnail rounded-circle" alt="home">
+                <% end %>
 
-        <% if current_user.present? %>
-            <% if current_user.role == 'individual' %>
+                <br><br>
+                <% if @company %>   
+                    <h5>Name: </h5><p><%= @company.name %></p>
+                    <h5>Description: </h5><p><%= @company.description %></p>
+                    <h5>Address: </h5><p><%= @company.address %></p>
+                    <h5>Contact Number: </h5><p> <%= @company.contact_no %> </p>
+                    <h5>Email Id: </h5><p><%= @company.email_id %></p>
+                    <h5>Official website: </h5><p> <a href= <%= @company.website_link %> > <%= @company.name %> </a> </p>
+                    <br><br>
+                <% else %>
+                    <h1> No such profile exists </h1>
+                <% end %>
                 
-                    <h1>Welcome, <%= @individual.name %> </h1>
-                    <%= button_to 'Profile'  , '/individuals/'+@individual.id.to_s ,class: "menu" , method: :get %>
-                    <%= button_to 'View jobs' , '/individuals/'+@individual.id.to_s+'/jobs' ,class: "menu" , method: :get %>
-                    <%= button_to 'View Application' , 'individual/'+@individual.id.to_s+'/individual_applications/' ,class: "menu" , method: :get %>
-                    <%= button_to 'View Schedules' , '/individuals/'+@individual.id.to_s+'/accepted_offers' ,class: "menu" , method: :get %>
+                <% if current_user.role== 'company'%>
+                    <%= button_to "Edit Profile", '/companies/'+@company.id.to_s+'/edit' , class: 'd-grid gap-2 d-md-block btn btn-primary' , method: :get %>
+                <% end %>
+            <% elsif current_user.role=='college' %>
+                <% if current_user.college.photo.attached? %>
+                    <img src="<%= url_for(current_user.college.photo) %>" class="img-fluid rounded mx-auto d-block img-thumbnail rounded-circle" alt="home">
+                <% end %>
+                <br><br>
+                <% if @college %>
+                    <h5>Name: </h5><p><%= @college.name %></p>
+                    <h5>Address: </h5><p><%= @college.address %></p>
+                    <h5>Total no of students: </h5><p> Not yet updated </p>
+                    <h5>No of students got placed: </h5><p>Not yet updated </p>
+                    <h5>No of students yet to be placed: </h5><p>Not yet updated</p>
+                    <h5>Contact Number: </h5><p> <%= @college.contact_no %> </p>
+                    <h5>Email Id: </h5><p><%= @college.email_id %></p>
+                    <h5>Official website: </h5><a href= <%= @college.website_link %> > <%= @college.name %> </a>
+                    <br><br>
+                <% else %>
+                    <h1> No such profile exists </h1>
+                <% end %>
+                
+                <% if current_user.role== 'college'%>
+                    <%= button_to "Edit Profile", '/colleges/'+@college.id.to_s+'/edit' , class: 'd-grid gap-2 d-md-block btn btn-primary' , method: :get %>
+                <% end %>
+            <% elsif current_user.role=='individual'%>
+                <div class="individual">
+                    <% if @individual %>
+                        <h5>Name: </h5><p><%= @individual.name %></p>
+                        <h5>Address: </h5><p><%= @individual.address %></p>
+                        <h5>Contact Number: </h5><p> <%= @individual.contact_no %> </p>
+                        <h5>Email Id: </h5><p><%= @individual.email_id %></p>
+                        <h5>Age: </h5><p><%= @individual.age %></p>
+                        <h5>Experience: </h5><p><%= @individual.experience==nil ? "Fresher" : @individual.experience %></p>
+                        <h5>SSLC percentage: </h5><p><%= @individual.sslc_percentage %></p>
+                        <h5>HSC/Diplomo: </h5><p><%= @individual.hsc_diplomo %></p>
+                        <h5>HSC/Diplomo percentage: </h5><p><%= @individual.hsc_diplomo_percentage %></p>
+                        <h5>Bachelor's degree: </h5><p> <%= @individual.bachelors_degree %> </p>
+                        <% unless  @individual.masters_degree!=nil %>
+                            <h5>Master's degree: </h5><p> <%= @individual.masters_degree %> </p>
+                        <% end%>
 
-            <% end %> 
-            <% if current_user.role == 'company' %>
-
-                    <h1>Welcome, <%= @company.name %> </h1>
-                    <%= button_to 'Profile'  , '/companies/'+@company.id.to_s ,class: "menu" , method: :get %>
-                    <%= button_to 'Jobs' , '/companies/'+@company.id.to_s+'/jobs' ,class: "menu" , method: :get %>
-                    <%= button_to 'Campus Applications', '/companies/'+@company.id.to_s.to_s+'/college_applications' ,class: "menu" , method: :get %>
-                    <%= button_to 'Schedules' , 'companies/'+@company.id.to_s+'/accepted_offers' ,class: "menu" , method: :get %>
-                </div>
-            <% end %> 
-            <% if current_user.role == 'college' %>
-                    
-                    <h1>Welcome, <%= @college.name %> </h1>
-                    <%= button_to 'Profile'  , '/colleges/'+@college.id.to_s ,class: "menu" , method: :get %>
-
-                    <% if current_user.permission.status=='Permitted'%>
-                        <%= button_to 'Search Companies' , '/companies' ,class: "menu" , method: :get %>
-                        <%= button_to 'Applications' , '/colleges/'+@college.id.to_s+'/college_applications/' ,class: "menu" , method: :get %>
-                        <%= button_to 'Schedules' , 'colleges/'+@college.id.to_s+'/accepted_offers' ,class: "menu" , method: :get %>
-                    
-                    
-                            <div class="course">
-                                <%= render 'courses/index' %>
-                            </div>
-
-                            <div class="students">
-                                <%= render 'students/index' %>
-                            </div> 
+                        <% if @individual.resume.attached? %>
+                            <h5>Resume: </h5> <p> <%= link_to 'Resume.pdf', main_app.rails_blob_path(@individual.resume , disposition: 'inline') %> </p>
+                        <% end %>
+                        <br>
+                        
+                        <% if current_user.role == 'individual'%>
+                            <%= button_to "Edit Profile", @individual.id.to_s+'/edit' ,class: 'd-grid gap-2 d-md-block btn btn-primary', method: :get %>
+                        <% end %>
                     <% else %>
-                        <p> 'You are yet to be approved by the Admin' </p>
+                        <h1> Profile not found </h1>
                     <% end %>
+                </div>
             <% end %>
-            
-        <% end %>
         </div>
+    </div>
+    </div>
+</div>

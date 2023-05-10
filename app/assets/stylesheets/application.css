@@ -20,6 +20,7 @@
     font-weight: lighter;
  }
 
+ /*
 body{
     margin: 0;
     padding: 0;
@@ -34,35 +35,37 @@ body{
 }
 
 .navbar{
-    width: 100%;
+    width: 100vmax;
     margin: auto;
     padding: 20px 50px 20px 20px;
     display: flex;
     align-items:center;
     justify-content: space-between;
+    background-color: rgb(100, 89, 255);
     background-color:rgb(3, 87, 104);
 }
 
-.navbar p#site_name{
-    width: 200px;
+.navbar img#site_logo{
+    width: 100px;
+    height: 50px;
     cursor:pointer;
-    color: white;
-    font-size: 25px;
-    font-weight:bolder;
     text-align: center;
 }
+
 
 .navbar ul li{
     list-style:none;
     display:inline-block;
-    margin: 0px 40px;
+    margin: 0px 50px;
 }
 
 .navbar ul li a{
     text-decoration: none;
-    color: white;
-    text-transform: uppercase;
-    
+    color: rgb(1, 61, 58);
+    text-transform:capitalize;
+    padding: 10px;
+    border: 1px solid rgb(1, 61, 58);
+    border-radius: 20px;
 }
 
 .actions{
@@ -74,6 +77,30 @@ body{
     padding: 10px 10px;
     background-color:rgb(125, 0, 69);
     color: white;
+    text-align: center;
+    border: 2px rgb(34, 199, 249);
+    text-decoration: none;
+    background-color: rgb(144, 8, 242);
+    color: white;
+    border-radius:50px;
+    box-shadow:inset 0 0 0 0 rgb(81, 255, 156);
+    float: center;
+    transition: ease-out 0.5s;
+    min-width: 100px;
+    width: fit-content;
+}
+
+.actions input[type="submit"]:hover{
+    box-shadow:inset 300px 0 0 0 rgb(34, 199, 249);
+}
+
+/*
+.default{
+    padding-top: 50px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 50px;
 }
 
 .field{
@@ -81,8 +108,22 @@ body{
     text-align: center;
     align-items: center;
     justify-content:space-between;
-    padding :50px 50px 10px 50px;
-    background-color: rgba(255, 251, 251, 0.7);
+    padding-top: 20px;
+    padding-bottom:20px;
+    padding-right: 100px;
+    padding-left: 100px;
+    background-color: rgba(17, 0, 254, 0.6);
+}
+
+.actions{
+    text-align: center;
+    align-items: center;
+    justify-content:space-between;
+    padding-top: 20px;
+    padding-bottom:20px;
+    padding-right: 100px;
+    padding-left: 100px;
+    background-color: rgba(17, 0, 254, 0.6);
 }
 
 .notice p#a{
@@ -104,3 +145,4 @@ body{
     border-color: #d6e9c6;
     color: #468847;
   }
+*/
