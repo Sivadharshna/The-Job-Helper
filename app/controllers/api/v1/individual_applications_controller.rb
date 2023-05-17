@@ -5,6 +5,14 @@ module Api
 
             before_action :check_user , only: [ :create ]
 
+            before_action :check_permission
+
+            def check_permission
+                if current_user.role!='individual' && current_user.permission.status!='Permitted' 
+                    render json: 'You need admins permssion to access', status: 403
+                end
+            end
+
             def check_user
                 if current_user.present? && current_user.role!='individual'
                     render json: 'Restricted Access', status: 403
@@ -41,13 +49,49 @@ module Api
             def create
                 @individual_application=IndividualApplication.new
                 @individual_application.individual_id=current_user.individual.id
-                
-                @individual_application.job_id=params[:job_id]
-                if @individual_application.save
-                    render json: 'Applied Successfully', status: 200
+                @job=Job.find_by(id: params[:job_id])
+                if @job
+                    @individual_application.job_id=params[:job_id]
+                    if @individual_application.save
+                        render json: 'Applied Successfully', status: 200
+                    else
+                        render json:  @individual_application.errors , status: 422
+                    end   
                 else
-                    render json:  @individual_application.errors , status: 422
-                end   
+                    render json: 'Job not found', status: 404
+                end
+            end
+
+            def update
+                if current_user.role=='company'
+                    @ia=IndividualApplication.find_by(id: params[:id])
+                    if @ia && current_user.company.id==@ia.job.company.id
+                        @ia.update(status: 'Rejected')
+                        render json: @ia, status: 200
+                    else
+                        render json: 'Restricted Access', status: 403
+                    end
+                else
+                    render json: 'Restricted Access', status: 403
+                end
+            end
+        
+            def destroy
+                if current_user.role=='individual'
+                    @ia=IndividualApplication.find_by(id: params[:id])
+                    if @ia && @ia.individual.id==current_user.individual.id
+                        if @ia.status=='Rejected'
+                            @ia.destroy
+                            render json: 'Deleted Application', status: 200
+                        else
+                            render json: 'Cannot be deleted', status: 403
+                        end
+                    else
+                        render json: 'Restricted Access', status: 403
+                    end
+                else
+                    render json: 'Restricted Access', status: 403
+                end
             end
 
         end

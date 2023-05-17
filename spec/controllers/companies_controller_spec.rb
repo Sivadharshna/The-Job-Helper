@@ -5,6 +5,10 @@ RSpec.describe CompaniesController, type: :controller do
     let!(:user1) { create(:user, role: 'company') }
     let!(:user2) { create(:user,email: 'college@example.com', role: 'college') }
     let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
+
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+    
     let!(:college2) {create(:college, user: user2)}
     let!(:course2) { create(:course, college: college2) }
     

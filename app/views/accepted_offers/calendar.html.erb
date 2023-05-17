@@ -5,14 +5,18 @@
             <%= month_calendar(events: @accepted_individuals, attribute: :schedule) do |date, accepted_individuals | %>
                 <div class='day'>
                     <%= date.day %>
+                    <%@ch=0%>
                     <% accepted_individuals.each do |a| %>
-                    <br>
-                        <% if current_user.role=='company' %>
-                            <%= button_to a.approval.job.name, '/companies/'+current_user.company.id.to_s+'/accepted_offers#'+a.id.to_s , class: 'button', method: :get %>
-                        <% elsif current_user.role=='individual' %>
-                            <%= button_to a.approval.job.name, '/individuals/'+current_user.individual.id.to_s+'/accepted_offers#'+a.id.to_s , class: 'button', method: :get %>
-                        <% end %>
-                        <%= a.schedule.strftime(' %I:%M %p') %>
+                        <br>
+                        <%if @ch==0 %>
+                            <% @ch=1 %>
+                            <% if current_user.role=='company' %>
+                                <%= button_to 'Click to view', '/companies/'+current_user.company.id.to_s+'/accepted_offers/'+a.id.to_s , class: 'button', method: :get %>
+                            <% elsif current_user.role=='individual' %>
+                                <%= button_to 'Click to view', '/individuals/'+current_user.individual.id.to_s+'/accepted_offers/'+a.id.to_s , class: 'button', method: :get %>
+                            <% end %>
+                            <%# a.schedule.strftime(' %I:%M %p') %>
+                        <%end%>
                     <% end %>
                 </div>
             <% end %>
@@ -34,14 +38,18 @@
                 <%= month_calendar(events: @accepted_colleges, attribute: :schedule) do |date, accepted_colleges | %>
                     <div class='day'>
                         <%= date.day %>
+                        <%@ch2=0%>
                         <% accepted_colleges.each do |a| %>
                         <br>
-                        <% if current_user.role=='company' %>
-                            <%= button_to a.approval.college.name, '/companies/'+current_user.company.id.to_s+'/accepted_offers#'+a.id.to_s , method: :get %>
-                        <% elsif current_user.role=='college' %>
-                            <%= button_to a.approval.company.name, '/companies/'+current_user.college.id.to_s+'/accepted_offers#'+a.id.to_s , method: :get %>
-                        <% end %>
-                            <%= a.schedule.strftime(' %I:%M %p') %>
+                            <%if @ch2==0 %>
+                                <% @ch2=1 %>
+                                <% if current_user.role=='company' %>
+                                    <%= button_to 'Click to view', '/companies/'+current_user.company.id.to_s+'/accepted_offers/'+a.id.to_s , method: :get %>
+                                <% elsif current_user.role=='college' %>
+                                    <%= button_to 'Click to view', '/colleges/'+current_user.college.id.to_s+'/accepted_offers/'+a.id.to_s , method: :get %>
+                                <% end %>
+                                <%# a.schedule.strftime(' %I:%M %p') %>
+                            <% end %>
                         <% end %>
                     </div>
                 <% end %>

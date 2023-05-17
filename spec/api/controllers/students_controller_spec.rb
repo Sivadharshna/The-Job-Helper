@@ -11,25 +11,35 @@ RSpec.describe StudentsController, type: :request do
     let!(:user1_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user1.id)}
     let!(:user2_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user2.id)}
     let!(:user3_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user3.id)}
+
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+
     describe 'Get #index' do
     
         context 'check user access' do
             it 'allows a college to view students' do
+                company=create(:company, user: user1)
                 college=create(:college, user: user2)
-                course=create(:course, college: college)
-                get '/api/v1/colleges/'+college.id.to_s+'/students' , params: { college_id: college.id ,access_token: user2_token.token, format: :json}
+                college_application=create(:college_application, college: college, company: company)
+                course=create(:course, college: college) 
+                get '/api/v1/colleges/'+college.id.to_s+'/students' , params: { access_token: user2_token.token, format: :json}
                 expect(response).to have_http_status(200)
             end 
-            it 'does not allows a company to view students index of a college' do
+            it ' allows a company to view students index of a college' do
+                company=create(:company, user: user1)
                 college=create(:college, user: user2)
+                college_application=create(:college_application, college: college, company: company)
                 course=create(:course, college: college)
-                get '/api/v1/colleges/'+college.id.to_s+'/students' , params: { college_id: college.id  ,access_token: user1_token.token, format: :json}
-                expect(response).to have_http_status(403)
+                get '/api/v1/college_applications/'+college_application.id.to_s+'/companies/'+company.id.to_s+'/students/view' , params: {access_token: user1_token.token, format: :json}
+                expect(response).to have_http_status(200)
             end
             it 'does not allow an individual to view students' do
+                company=create(:company, user: user1)
                 college=create(:college, user: user2)
+                college_application=create(:college_application, college: college, company: company)
                 course=create(:course, college: college)
-                get '/api/v1/colleges/'+college.id.to_s+'/students' , params: { college: college.id ,access_token: user3_token.token, format: :json}
+                get '/api/v1/college_applications/'+college_application.id.to_s+'/companies/'+company.id.to_s+'/students/view' , params: { college: college.id ,access_token: user3_token.token, format: :json}
                 expect(response).to have_http_status(403)
             end
         end

@@ -1,21 +1,27 @@
             <div class="Companies_list">
                 <h1> Companies </h1>
-                <br>
-                <% if !@companies.empty? %>
-                    <% @companies.each do |company| %>
-                        <div class="one">
-                            <%= company.name %></h4>
-                            <p><%= company.address %> LPA</p>
-                            <p><%= company.contact_no %></p>
-                            <div class="option">
-                                <%= button_to 'View Details' , '/companies/'+company.id.to_s.to_s ,class: 'details' , method: :get %>
-                                <% if current_user.role=='college'%>
-                                    <%= button_to 'Apply' , '/companies/'+company.id.to_s+'/college_applications/new' ,class: 'details' , method: :post %>
-                                <% end %>
-                            </div>
-                        </div>
-                    <% end %>
-                <% else %>
-                    <p> Oops! We are empty now, Try again later </p>
-                <% end %>
+                <br> 
+                        <% if !@companies.empty? %>
+                            <% @companies.each do |company| %>
+                                <div class="row shadow p-3 mb-5 bg-body-tertiary rounded">
+                                    <div class='container'>
+                                        <h4> <%= company.name %></h4>
+                                        <p><%= company.address %> LPA</p>
+                                        <p><%= company.contact_no %></p>
+                                        <div class="row">
+                                            <div class='col-md-6'>
+                                                <%= button_to 'View Details' , '/companies/'+company.id.to_s.to_s ,class: 'btn btn-primary' , method: :get %>
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <% if current_user.role=='college'%>
+                                                    <%= button_to 'Apply' , '/companies/'+company.id.to_s+'/college_applications/new' ,class: 'btn btn-success' , method: :post %>
+                                                <% end %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% end %>
+                        <% else %>
+                            <p> Oops! We are empty now, Try again later </p>
+                        <% end %>
             </div>

@@ -6,6 +6,9 @@ RSpec.describe IndividualApplicationsController, type: :controller do
     let!(:user2) { create(:user,email: 'college@example.com', role: 'college') }
     let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
 
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+
     describe 'GET #index' do
         context 'check user access' do
             it 'a company can view the application' do

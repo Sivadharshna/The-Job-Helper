@@ -5,6 +5,15 @@ class CompaniesController < ApplicationController
     before_action :check_user , only: [:new, :create, :edit, :update]
     before_action :check_user_index, only: [:index]
 
+    before_action :check_permission
+
+    def check_permission
+        if current_user.role!='individual' && current_user.role!='company' && current_user.permission.status!='Permitted' 
+            flash[:notice]='You need admins permssion to access'
+            redirect_to root_path
+        end
+    end
+
     private def check_user_index
         if current_user.present? && current_user.role!='college'
             redirect_to root_path

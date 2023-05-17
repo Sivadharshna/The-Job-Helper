@@ -11,6 +11,9 @@ RSpec.describe Api::V1::CollegeApplicationsController, type: :request do
     let!(:user1_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user1.id)}
     let!(:user2_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user2.id)}
     let!(:user3_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user3.id)}
+
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
     
         describe 'GET #index' do
             context 'check user access' do
@@ -42,6 +45,8 @@ RSpec.describe Api::V1::CollegeApplicationsController, type: :request do
                 it "can create an application when the current user's role is college" do
                     college=create(:college, user: user2) 
                     company=create(:company, user: user1) 
+                    course=create(:course, college: college)
+                    student=create(:student, course: course)
                     post '/api/v1/companies/'+company.id.to_s+'/college_applications/new' , params: { college: college.attributes ,access_token: user2_token.token}
                     expect(response).to have_http_status(200)
                 end

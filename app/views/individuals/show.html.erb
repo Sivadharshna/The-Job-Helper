@@ -1,4 +1,7 @@
-            <div class="individual">
+<div class='home'>
+    <div class='container text-center'>
+    <div class='profile'>
+        <div class="row row-no-gutters">
                 <% if @individual %>
                     <h1>Profile</h1>
                     <h5>Name: </h5><p><%= @individual.name %></p>
@@ -21,7 +24,7 @@
                     <br>
                     
                     <% if current_user.role == 'individual'%>
-                        <%= button_to "Edit Profile", @individual.id.to_s+'/edit' ,class: 'edit', method: :get %>
+                        <%= button_to "Edit Profile", '/individuals/'+@individual.id.to_s+'/edit' ,class: 'd-grid gap-2 d-md-block btn btn-primary', method: :get %>
                     <% end %>
                 <% else %>
                     <h1> Profile not found </h1>

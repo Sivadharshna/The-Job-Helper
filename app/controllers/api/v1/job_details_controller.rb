@@ -3,6 +3,13 @@ module Api
         class JobDetailsController < Api::ApplicationController
             before_action :doorkeeper_authorize!
             
+            before_action :check_permission
+
+            def check_permission
+                if current_user.role!='individual' && current_user.permission.status!='Permitted' 
+                    render json: 'You need admins permssion to access', status: 403
+                end
+            end
 
             def index
                 if current_user.present? && current_user.role=='individual'
@@ -18,7 +25,7 @@ module Api
 
             def create
                 if current_user.present? && current_user.role=='company'
-                    @jobdetail=JobDetail.new(job_detail_params)
+                    @jobdetail=JobDetail.new
                     @jobdetail.accepted_offer_id=params[:accepted_offer_id].to_i
                     @jobdetail.result='SELECTED'
                     if @jobdetail.save
@@ -31,9 +38,6 @@ module Api
                 end
             end
 
-            def job_detail_params
-                params.require(:job_detail).permit(:result)
-            end
         end
     end
 end

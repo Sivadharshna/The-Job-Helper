@@ -19,6 +19,9 @@ ActiveAdmin.register Student do
     index do
        column :name
        column :course
+       column 'College', :college_name do | student |
+        link_to student.course.college.name, admin_college_path(student.course.college)
+       end
        column :hsc_diplomo
        column :graduation_year
        column :placement_status
@@ -31,5 +34,6 @@ ActiveAdmin.register Student do
     filter :hsc_diplomo
     filter :graduation_year
     filter :placement_status
+    filter :course_college_id_eq, label: 'College', as: :select, collection: Course.joins(:college).pluck('colleges.name', 'courses.college_id').uniq
 
 end

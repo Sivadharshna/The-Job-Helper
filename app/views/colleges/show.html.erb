@@ -19,7 +19,7 @@
                 <% end %>
                 
                 <% if current_user.role== 'college'%>
-                    <%= button_to "Edit Profile", '/colleges/'+@college.id.to_s+'/edit' , class: 'edit' , method: :get %>
+                    <%= button_to "Edit Profile", '/colleges/'+@college.id.to_s+'/edit' , class: 'd-grid gap-2 d-md-block btn btn-primary' , method: :get %>
                 <% end %>
 
             </div>

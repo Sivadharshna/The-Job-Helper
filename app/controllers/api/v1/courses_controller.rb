@@ -5,10 +5,18 @@ module Api
             
             
             before_action :check_user
+
+            before_action :check_permission
+
+            def check_permission
+                if current_user.role!='individual' && current_user.role!='college' && current_user.permission.status!='Permitted' 
+                    render json: 'You need admins permssion to access', status: 403
+                end
+            end
             
             def check_user
                 if current_user.present? && current_user.role!='college'
-                    render json:'Restriceted Access', status: 403
+                    render json:'Restricted Access', status: 403
                 end
             end
 

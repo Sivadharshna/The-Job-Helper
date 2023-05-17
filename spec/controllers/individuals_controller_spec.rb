@@ -6,6 +6,9 @@ RSpec.describe  IndividualsController, type: :controller do
     let!(:user2) { create(:user,email: 'college@example.com', role: 'college') }
     let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
 
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }    
+
     
         describe 'GET #show' do
             context 'check user access' do
@@ -16,7 +19,10 @@ RSpec.describe  IndividualsController, type: :controller do
                     expect(response).to render_template(:show)
                 end
                 it 'allows any valid user company to see the show template' do
-                    individual = create(:individual, user: user3)
+                    individual = create(:individual, user: user3)                    
+                    company= create(:company, user: user1)
+                    job=create(:job, company: company)
+                    @individual_application=create(:individual_application, individual: individual, job: job)
                     sign_in user1
                     get :show, params: {id: individual.id}
                     expect(response).to render_template(:show)

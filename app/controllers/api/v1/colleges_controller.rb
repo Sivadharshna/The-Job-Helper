@@ -6,6 +6,14 @@ module Api
             before_action :check_user , only: [:new, :create, :edit, :update]
             before_action :check_user_show, only: [:show]
 
+            before_action :check_permission
+
+            def check_permission
+                if current_user.role!='individual' && current_user.role!='college' && current_user.permission.status!='Permitted' 
+                    render json: 'You need admins permssion to access', status: 403
+                end
+            end
+
             def check_user_show
                 if current_user.present? && current_user.role=='individual'
                     render json: 'Restricted Access' , status: 403
@@ -97,19 +105,23 @@ module Api
             def select_students
                 if current_user.present?
                     if current_user.role=='college' 
-                        @company=Company.find(params[:company_id])
-                        if @company
+                        @college_application=CollegeApplication.find_by(id: params[:college_application_id])
+                        if @college_application
                             @student=Student.find(params[:student_id])
-                            exist=@student.course.college.college_applications.where(company_id: params[:company_id])
-                            if exist
-                                if check_student_not_selected(@company , @student)==true
-                                    if @company.students << @student
-                                        render json: 'Selected Successfully', status: 200
+                            if @college_application.college.id==current_user.college.id && @student.course.college.id==current_user.college.id
+                                exist=@student.course.college.college_applications.where(id: params[:college_application_id])
+                                if !exist.empty?
+                                    if check_student_not_selected(@college_application , @student)==true
+                                        if @college_application.students << @student
+                                            render json: 'Selected Successfully', status: 200
+                                        else
+                                            render json: 'Please try Again' , status: 500 #Internal server error
+                                        end
                                     else
-                                        render json: 'Please try Again' , status: 500 #Internal server error
+                                        render json: 'Already selected', status: 409 #conflict 
                                     end
                                 else
-                                    render json: 'Already selected', status: 409 #conflict 
+                                    render json: 'Restricted Access', status: 403
                                 end
                             else
                                 render json: 'Restricted Access', status: 403
@@ -125,8 +137,8 @@ module Api
                 end
             end
 
-            private def check_student_not_selected(company, student)
-                if company.students.exists?(student.id)==true
+            private def check_student_not_selected(college_application, student)
+                if college_application.students.exists?(student.id)==true
                     return false
                 else
                     return true

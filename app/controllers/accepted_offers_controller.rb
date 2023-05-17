@@ -2,30 +2,45 @@ class AcceptedOffersController < ApplicationController
     before_action :authenticate_user!
 
     before_action :check_user, only: [:new, :create]
+
+    before_action :check_permission
+
+    def check_permission
+        if current_user.role!='individual' && current_user.permission.status!='Permitted' 
+            flash[:notice]='You need admins permssion to access'
+            redirect_to root_path
+        end
+    end
     
     def check_user
         if current_user.present? && current_user.role!='company'
-        flash[:notice]='Restricted Access'
-        redirect_to root_path
+            flash[:notice]='Restricted Access'
+            redirect_to root_path
         end
     end
 
     def index
         if current_user.present?
             if current_user.role=='company'
+                @ac=AcceptedOffer.find(params[:id])
+                date=Date.parse(@ac.schedule.to_s)
                 @individual_applications=IndividualApplication.joins(:job).where(job: {company_id: current_user.company.id} )
-                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications))
+                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications)).and(AcceptedOffer.where(schedule: date.beginning_of_day..date.end_of_day))
 
                 @college_applications=CollegeApplication.where(company_id: current_user.company.id)
-                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications))
+                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications)).and(AcceptedOffer.where(schedule: date.beginning_of_day..date.end_of_day))
                 flash[:notice]='The schedules will disappear after 10 days from  their scheduled date'
             elsif current_user.role=='individual'
+                @ac=AcceptedOffer.find(params[:id])
+                date=Date.parse(@ac.schedule.to_s)
                 @individual_applications=IndividualApplication.where(individual_id: current_user.individual.id )
-                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications))
+                @accepted_individuals=AcceptedOffer.where(approval_type: 'IndividualApplication').and(AcceptedOffer.where(approval_id: @individual_applications)).and(AcceptedOffer.where(schedule: date.beginning_of_day..date.end_of_day))
                 flash[:notice]='The schedules will disappear after 10 days from  their scheduled date'
             elsif current_user.role=='college'
+                @ac=AcceptedOffer.find(params[:id])
+                date=Date.parse(@ac.schedule.to_s)
                 @college_applications=CollegeApplication.where(college_id: current_user.college.id)
-                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications))
+                @accepted_colleges=AcceptedOffer.where(approval_type: 'CollegeApplication').and(AcceptedOffer.where(approval_id: @college_applications)).and(AcceptedOffer.where(schedule: date.beginning_of_day..date.end_of_day))
                 flash[:notice]='The schedules will disappear after 10 days from  their scheduled date'
             end
         end  

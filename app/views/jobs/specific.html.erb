@@ -35,8 +35,11 @@
                         </div>
                     <% end %>
                 <% else %>
-                    
-                    <h4> Sorry! We couldn't find perfect matches. Try searching all jobs! </h4>
+                    <% if current_user.role=='individual' %>
+                        <h4> Sorry! We couldn't find perfect matches. Try searching all jobs! </h4>
+                    <% else %>
+                        <h4> You have no jobs!  </h4>
+                    <% end %>
                 <% end %>
                 
             </div>

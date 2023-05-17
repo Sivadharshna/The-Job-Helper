@@ -12,6 +12,9 @@ RSpec.describe Api::V1::IndividualApplicationsController, type: :request do
     let!(:user2_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user2.id)}
     let!(:user3_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user3.id)}
 
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+
     describe 'GET #index' do
         context 'check user access' do
             it 'a company can view the application' do
@@ -27,7 +30,7 @@ RSpec.describe Api::V1::IndividualApplicationsController, type: :request do
                 individual=create(:individual, user: user3)
                 job=create(:job, company: company)
                 application=create(:individual_application, individual: individual, job: job)
-                get '/api/v1/individual/'+individual.id.to_s+'/individual_applications', params: {  access_token: user3_token.token }
+                get '/api/v1/individuals/'+individual.id.to_s+'/individual_applications', params: {  access_token: user3_token.token }
                 expect(response).to have_http_status(200)
             end
             it 'a college cannot view the individual application' do
@@ -35,7 +38,7 @@ RSpec.describe Api::V1::IndividualApplicationsController, type: :request do
                 individual=create(:individual, user: user3)
                 job=create(:job, company: company)
                 application=create(:individual_application, individual: individual, job: job)
-                get '/api/v1/individual/'+individual.id.to_s+'/individual_applications', params: {  access_token: user2_token.token}
+                get '/api/v1/individuals/'+individual.id.to_s+'/individual_applications', params: {  access_token: user2_token.token}
                 expect(response).to have_http_status(403)
             end
         end

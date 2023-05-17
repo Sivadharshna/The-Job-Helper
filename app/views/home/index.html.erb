@@ -46,7 +46,6 @@
                     <%= button_to "Edit Profile", '/colleges/'+@college.id.to_s+'/edit' , class: 'd-grid gap-2 d-md-block btn btn-primary' , method: :get %>
                 <% end %>
             <% elsif current_user.role=='individual'%>
-                <div class="individual">
                     <% if @individual %>
                         <h5>Name: </h5><p><%= @individual.name %></p>
                         <h5>Address: </h5><p><%= @individual.address %></p>
@@ -68,12 +67,11 @@
                         <br>
                         
                         <% if current_user.role == 'individual'%>
-                            <%= button_to "Edit Profile", @individual.id.to_s+'/edit' ,class: 'd-grid gap-2 d-md-block btn btn-primary', method: :get %>
+                            <%= button_to "Edit Profile", '/individuals/'+@individual.id.to_s+'/edit' ,class: 'd-grid gap-2 d-md-block btn btn-primary', method: :get %>
                         <% end %>
                     <% else %>
                         <h1> Profile not found </h1>
                     <% end %>
-                </div>
             <% end %>
         </div>
     </div>

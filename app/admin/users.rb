@@ -17,6 +17,23 @@ ActiveAdmin.register User do
 
   filter :role
 
+  index do
+    column :id
+    column :role
+    column :email do | user |
+      if user.role=='college'
+        link_to user.email , admin_college_path(user.college)
+      elsif user.role=='individual'
+        link_to user.email, admin_individual_path(user.individual)
+      elsif user.role=='company'
+        link_to user.email , admin_company_path(user.company)
+      end
+    end
+    column :created_at
+    column :updated_at
+    actions
+ end
+
   
   
 end

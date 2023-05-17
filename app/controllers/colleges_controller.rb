@@ -4,6 +4,15 @@ class CollegesController < ApplicationController
     before_action :check_user , only: [:new, :create, :edit, :update]
     before_action :check_user_show, only: [:show]
 
+    before_action :check_permission
+
+    def check_permission
+        if current_user.role!='individual' && current_user.role!='college' && current_user.permission.status!='Permitted' 
+            flash[:notice]='You need admins permssion to access'
+            redirect_to root_path
+        end
+    end
+
     def check_user_show
         if current_user.present? && current_user.role=='individual'
             flash[:notice]='Restricted Access'
@@ -126,32 +135,41 @@ class CollegesController < ApplicationController
     end
 
     def select_students 
-        if current_user.present?
+        if current_user.present? 
             if current_user.role=='college'
-                @college=College.find(current_user.college.id)
-                if @college
+                @college_application=CollegeApplication.find_by(id: params[:college_application_id])
+                if @college_application
                     @student=Student.find(params[:student_id])
-                    exist=@student.course.college.college_applications.where(company_id: params[:company_id])
-                    if exist
-                        @company=Company.find(params[:company_id])
-                        if check_student_not_selected(@company , @student)==true
-                            if @company.students << @student
-                                flash[:notice] ='Selected Successfully'
-                                redirect_to '/companies/'+@company.id.to_s+'/students'
+                    if @college_application.college.id==current_user.college.id && @student.course.college.id==current_user.college.id
+                        exist=@student.course.college.college_applications.where(id: params[:college_application_id])
+                        if !exist.empty?
+                            if check_student_not_selected(@college_application , @student)==true
+                                if @college_application.students << @student
+                                    flash[:notice] ='Selected Successfully'
+                                    redirect_to '/college_applications/'+@college_application.id.to_s+'/students'
+                                else
+                                    flash[:notice] ='Please try Again'
+                                    redirect_to '/college_applications/'+@college_application.id.to_s+'/students'
+                                end
                             else
-                                flash[:notice] ='Please try Again'
+                                flash[:notice] = 'Already selected'
+                                redirect_to '/college_applications/'+@college_application.id.to_s+'/students'
                             end
                         else
-                            flash[:notice] = 'Already selected'
+                            flash[:notice]='Restricted Access'
+                            redirect_to root_path
                         end
                     else
                         flash[:notice]='Restricted Access'
+                        redirect_to '/college_applications/'+@college_application.id.to_s+'/students'
                     end
                 else
                     flash[:notice]='Not found'
+                    redirect_to '/college_applications/'+@college_application.id.to_s+'/students'
                 end
             else
                 flash[:notice]='Restricted Access'
+                redirect_to root_path
             end
         else
             redirect_to root_path
@@ -162,8 +180,8 @@ class CollegesController < ApplicationController
         params.require(:college).permit(:name, :photo, :address, :contact_no, :email_id, :website_link) 
     end
 
-    private def check_student_not_selected(company, student)
-        if company.students.exists?(student.id)==true
+    private def check_student_not_selected(college_application, student)
+        if college_application.students.exists?(student.id)==true
             return false
         else
             return true

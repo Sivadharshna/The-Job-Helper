@@ -8,6 +8,9 @@ RSpec.describe HomeController , type: :controller do
     let!(:college2) { create(:college, user: user2) }
     let!(:individual3) { create(:individual, user: user3 )}
 
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+
     describe 'Renering home pages based on user' do
         context 'after signing in' do
             it 'as company' do

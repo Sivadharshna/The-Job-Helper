@@ -1,9 +1,5 @@
      <div class='container'>
         <div class="profile">
-
-            <% if current_user.role=='company' %>
-                <%= button_to "BACK" , '/' , class: 'back' ,method: :get %>
-            <% end %>
             
             <% if @company %>   
                 <% if @company.photo.attached? %>
@@ -21,7 +17,7 @@
             <% end %>
             
             <% if current_user.role== 'company'%>
-                <%= button_to "Edit Profile", @company.id.to_s+'/edit' , class: 'edit' , method: :get %>
+                <%= button_to "Edit Profile", @company.id.to_s+'/edit' , class: 'd-grid gap-2 d-md-block btn btn-primary' , method: :get %>
             <% end %>
         </div>
     </div>

@@ -12,7 +12,7 @@
                 <% unless  @job.expected_cgpa!=0.0 %>
                     <h5>Minimum CGPA: </h5><p><%= @job.expected_cgpa %></p>
                 <% end %>
-                <% unless  @job.minimum_experience!=0.0 %>
+                <% unless  @job.minimum_experience==0.0 %>
                     <h5>Minimum Experience: </h5><p><%= @job.minimum_experience %></p>
                 <% end %>
                 <h5>Minimum Educational Qualification: </h5><p><%=@job.minimum_educational_qualification %></p>
@@ -26,11 +26,10 @@
                     <% end %>
                 </div>
 
-                <div class='company'>
+                
                     <% if current_user.role == 'company' %>
-                        <%= button_to 'View Applications' , @job.id.to_s+'/individual_applications' ,class: 'btn btn-primary', method: :get %>
+                        <%= button_to 'View Applications' , @job.id.to_s+'/individual_applications' ,class: 'btn btn-success', method: :get %>
                     <% end %>
-                </div>
 
                 <br><br>
                 

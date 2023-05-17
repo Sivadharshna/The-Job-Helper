@@ -16,10 +16,24 @@
                                 <p> Status :  <%= individual_application.status%></p>
                                 
 
-                                    <div class=öption>
-                                            <% if current_user.role=='company'%> 
-                                                <%= button_to 'View Profile' , '/individuals/'+individual_application.individual.id.to_s ,class: 'access' , method: :get %>
-                                                <%= button_to 'Approve' , 'individual_applications/'+individual_application.id.to_s+'/accepted_offers/new' ,class: 'access' , method: :get %>
+                                    <div class=row>
+                                            <% if current_user.role=='company'%>
+                                                <div class='col-md-4'> 
+                                                    <%= button_to 'View Profile' , '/individuals/'+individual_application.individual.id.to_s ,class: 'btn btn-primary' , method: :get %>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <%= button_to 'Approve' , 'individual_applications/'+individual_application.id.to_s+'/accepted_offers/new' ,class: 'btn btn-success' , method: :get %>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <%= button_to 'Reject' , '/individual_applications/'+individual_application.id.to_s ,class: 'btn btn-danger' , method: :put %>
+                                                </div>
+                                            <% end %>
+                                            <% if current_user.role=='individual'%>
+                                                <% if individual_application.status=='Rejected' %>
+                                                    <div class='col-md-6'> 
+                                                        <%= button_to 'Delete' , '/individual_applications/'+individual_application.id.to_s ,class: 'btn btn-danger' , method: :delete %>
+                                                    </div>
+                                                <% end%>
                                             <% end %>
                                     </div>
                             </div>

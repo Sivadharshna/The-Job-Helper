@@ -6,6 +6,9 @@ RSpec.describe Api::V1::CollegesController, type: :request do
     let!(:user1) { create(:user,email: 'company@example.com', role: 'company') }
     let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
 
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+
     let!(:application) { create(:doorkeeper_application)}
 
     let!(:user2_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user2.id)}
@@ -70,24 +73,27 @@ RSpec.describe Api::V1::CollegesController, type: :request do
 
         describe 'POST #select_students' do
             context 'check user access' do
-                let!(:college2) {create(:college, user: user2)}
-                let!(:course2) { create(:course, college: college2) }
+                let!(:college) {create(:college, user: user2)}
+                let!(:course2) { create(:course, college: college) }
                 it "can select a student when current user's role is company" do
                     company = create(:company, user: user1, name: 'Infosys India', email_id: 'infoindia@gmail.com',  contact_no: '9876543212')
                     student = create(:student, course: course2)
-                    post '/api/v1/companies/'+company.id.to_s+'/students/'+student.id.to_s+'/select_students' , params: { access_token: user1_token.token, company: company.attributes, format: :json }
+                    @college_application=create(:college_application, college: college, company: company)
+                    post '/api/v1/college_applications/'+@college_application.id.to_s+'/students/'+student.id.to_s+'/select_students' , params: { access_token: user1_token.token, company: company.attributes, format: :json }
                     expect(response).to have_http_status(403)
                 end
                 it 'an individual cannot select students' do
                     company = create(:company, user: user1, name: 'Infosys India', email_id: 'infoindia@gmail.com',  contact_no: '9876543212')
                     student = create(:student, course: course2)
-                    post '/api/v1/companies/'+company.id.to_s+'/students/'+student.id.to_s+'/select_students' , params: { access_token: user3_token.token, company: company.attributes, format: :json }
+                    @college_application=create(:college_application, college: college, company: company)
+                    post '/api/v1/college_applications/'+@college_application.id.to_s+'/students/'+student.id.to_s+'/select_students' , params: { access_token: user3_token.token, company: company.attributes, format: :json }
                     expect(response).to have_http_status(403)
                 end
                 it 'a college cannot select students' do
                     company = create(:company, user: user1, name: 'Infosys India', email_id: 'infoindia@gmail.com',  contact_no: '9876543212')
                     student = create(:student, course: course2)
-                    post '/api/v1/companies/'+company.id.to_s+'/students/'+student.id.to_s+'/select_students'  , params: { access_token: user2_token.token, company: company.attributes, format: :json }
+                    @college_application=create(:college_application, college: college, company: company)
+                    post '/api/v1/college_applications/'+@college_application.id.to_s+'/students/'+student.id.to_s+'/select_students'  , params: { access_token: user2_token.token, company: company.attributes, format: :json }
                     expect(response).to have_http_status(200)
                 end
             end

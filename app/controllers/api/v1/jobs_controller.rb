@@ -6,6 +6,15 @@ module Api
 
             before_action :check_user , only: [:new, :create, :edit, :update, :destroy]
 
+            before_action :check_permission
+
+            def check_permission
+                if current_user.role!='individual' && current_user.permission.status!='Permitted' 
+                    render json: 'You need admins permssion to access', status: 403
+                end
+            end
+
+
             def check_user
                 if current_user.present? && current_user.role!='company'
                     render json: 'Restricted Access', status: 403
@@ -26,7 +35,7 @@ module Api
                     if current_user.role=='company' 
                         @jobs=Job.where(company_id: current_user.company.id)
                         if @jobs
-                            render json: @job, status: 200 #OK
+                            render json: @jobs, status: 200 #OK
                         else
                             render json: 'Not found', status: 404 # resource not found'
                         end

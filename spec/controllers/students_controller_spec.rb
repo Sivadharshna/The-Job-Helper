@@ -5,6 +5,10 @@ RSpec.describe StudentsController, type: :controller do
     let!(:user1) { create(:user, role: 'company') }
     let!(:user2) { create(:user,email: 'college@example.com', role: 'college') }
     let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
+
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+    
     describe 'Get #index' do
     
         context 'check user access' do
@@ -18,7 +22,8 @@ RSpec.describe StudentsController, type: :controller do
                 sign_in user1
                 company=create(:company, user: user1)
                 college=create(:college, user: user2)
-                get :index , params: { college_id: college.id }
+                @college_application=create(:college_application, college: college, company: company)
+                get :index , params: { college_application_id: @college_application.id , company_id: company.id }
                 expect(response).to render_template(:index)
             end
             it 'does not allow an individual to view students' do

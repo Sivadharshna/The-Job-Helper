@@ -2,6 +2,16 @@ class JobDetailsController < ApplicationController
 
     before_action :check_user , only: [:create]
     before_action :authenticate_user!
+
+    before_action :check_permission
+
+    def check_permission
+        if current_user.role!='individual' && current_user.permission.status!='Permitted' 
+            flash[:notice]='You need admins permssion to access'
+            redirect_to root_path
+        end
+    end
+    
     def check_user
         if current_user.role!='company'
             flash[:notice]='Restricted Access'

@@ -16,7 +16,9 @@ ActiveAdmin.register IndividualApplication do
   # end
       index do
         column :individual.name
-        column :job.name
+        column 'Job', :job_name do | individual_application |
+          link_to individual_application.job.name+' - '+individual_application.job.company.name, admin_job_path(individual_application.job)
+        end
         column :status
       end
 

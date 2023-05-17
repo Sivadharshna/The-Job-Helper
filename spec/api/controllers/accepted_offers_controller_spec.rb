@@ -11,6 +11,9 @@ RSpec.describe Api::V1::AcceptedOffersController, type: :request do
     let!(:user1_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user1.id)}
     let!(:user2_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user2.id)}
     let!(:user3_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user3.id)}
+
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
     
         describe 'GET #index' do
             context 'check user access' do
@@ -20,7 +23,7 @@ RSpec.describe Api::V1::AcceptedOffersController, type: :request do
                     college=create(:college, user: user2)
                     @college_application=create(:college_application, college: college, company: company)
                     accepted_colleges=create(:accepted_offer,  approval_type: 'CollegeApplication', approval_id: @college_application.id)                
-                    get '/api/v1/colleges/'+college.id.to_s+'/accepted_offers', params: {access_token: user2_token.token, format: :json}
+                    get '/api/v1/colleges/'+college.id.to_s+'/accepted_offers/'+accepted_colleges.id.to_s, params: {access_token: user2_token.token, format: :json}
                     expect(response).to have_http_status(200)               
                 end 
                 it 'individuals can view accepted offers' do
@@ -29,7 +32,7 @@ RSpec.describe Api::V1::AcceptedOffersController, type: :request do
                     job=create(:job, company: company)
                     @individual_application=create(:individual_application, individual: individual, job: job)
                     @accepted_individuals=create(:accepted_offer, approval_type: 'IndividualApplication', approval_id: @individual_application.id)
-                    get '/api/v1/individuals/'+individual.id.to_s+'/accepted_offers', params: {access_token: user3_token.token, format: :json}
+                    get '/api/v1/individuals/'+individual.id.to_s+'/accepted_offers/'+@accepted_individuals.id.to_s, params: {access_token: user3_token.token, format: :json}
                     expect(response).to have_http_status(200)
                 end
                 it 'companies can view accepted offers' do
@@ -41,7 +44,7 @@ RSpec.describe Api::V1::AcceptedOffersController, type: :request do
                     individual_application=create(:individual_application, individual: individual, job: job)
                     accepted_individuals=create(:accepted_offer, approval_type: 'IndividualApplication', approval_id: individual_application.id)  
                     accepted_colleges=create(:accepted_offer,  approval_type: 'CollegeApplication', approval_id: college_application.id)                
-                    get '/api/v1/companies/'+company.id.to_s+'/accepted_offers', params: {access_token: user1_token.token, format: :json} 
+                    get '/api/v1/companies/'+company.id.to_s+'/accepted_offers/'+accepted_colleges.id.to_s, params: {access_token: user1_token.token, format: :json, id: accepted_individuals.id} 
                     expect(response).to have_http_status(200)
                 end                
             end

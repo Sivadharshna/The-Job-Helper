@@ -16,7 +16,9 @@ ActiveAdmin.register Job do
   # end
   
     index do
-      column :name
+      column :name do |job|
+        link_to job.name, admin_job_path(job)
+      end
       column :company.name
       column :salary
       actions

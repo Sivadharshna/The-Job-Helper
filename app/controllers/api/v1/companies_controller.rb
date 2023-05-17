@@ -6,6 +6,14 @@ module Api
             before_action :check_user , only: [:new, :create, :edit, :update]
             before_action :check_user_index, only: [:index]
 
+            before_action :check_permission
+
+            def check_permission
+                if current_user.role!='individual' && current_user.role=='company' && current_user.permission.status!='Permitted' 
+                    render json: 'You need admins permssion to access', status: 403
+                end
+            end
+
             private def check_user_index
                 if current_user.present? && current_user.role!='college'
                     render json: 'Restricted Access' , status: 403
@@ -55,7 +63,7 @@ module Api
 
             def update
                 if current_user.present?
-                    if current_user.role=='company' && current_user.company.id==params[:company_id].to_i
+                    if current_user.role=='company' && current_user.company.id==params[:id].to_i
                         @company=Company.find_by(id: params[:id])
                         if @company
                             if @company.update(company_params)

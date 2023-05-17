@@ -15,4 +15,17 @@ ActiveAdmin.register JobDetail do
   #   permitted
   # end
   
+  index do
+    column :name do | job_detail |
+      link_to job_detail.accepted_offer.approval.individual.name, admin_individual_path(job_detail.accepted_offer.approval.individual)
+    end
+    column :job do | job_detail |
+      link_to job_detail.accepted_offer.approval.job.name, admin_job_path(job_detail.accepted_offer.approval.job)
+    end
+    column :company do | job_detail |
+      link_to job_detail.accepted_offer.approval.job.company.name, admin_company_path(job_detail.accepted_offer.approval.job.company)
+    end
+    column :result
+  end
+
 end

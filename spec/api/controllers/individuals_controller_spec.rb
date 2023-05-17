@@ -11,6 +11,9 @@ RSpec.describe  IndividualsController, type: :request do
     let!(:user1_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user1.id)}
     let!(:user2_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user2.id)}
     let!(:user3_token) { create(:doorkeeper_access_token, application: application, resource_owner_id: user3.id)}
+
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
     
         describe 'GET #show' do
             context 'check user access' do

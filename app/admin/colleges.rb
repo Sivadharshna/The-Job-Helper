@@ -22,8 +22,22 @@ ActiveAdmin.register College do
           column :email_id
           column :website_link
           column :contact_no
+          column :address
           actions
       end
+
+      form do |f|
+        f.inputs do
+          f.input :user, as: :select, collection: User.all.map{|u| [u.email, u.id]}
+          f.input :name
+          f.input :address
+          f.input :contact_no
+          f.input :website_link
+          f.input :email_id
+        end
+        f.actions
+      end
+      
 
       filter :name 
       filter :address

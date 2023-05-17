@@ -4,9 +4,18 @@ module Api
             before_action :doorkeeper_authorize!
     
             
-            before_action :check_user , only: [:new, :create, :edit, :update]
+            before_action :check_user , only: [:new, :create, :edit, :update, :destroy, :select]
 
             before_action :check_user_index, only: [:index]
+
+            before_action :check_permission
+
+            def check_permission
+                if current_user.role!='individual' && current_user.role!='college' && current_user.permission.status!='Permitted' 
+                    render json: 'You need admins permssion to access', status: 403
+                end
+            end
+
 
             def check_user_index
                 if current_user.present? && current_user.role=='individual'
@@ -25,7 +34,31 @@ module Api
                 if current_user.role=='college' && current_user.college.id==params[:college_id].to_i
                     @students=Student.where(course_id: College.find(params[:college_id]).courses)
                     if @students
-                        render json: @student, status: 200
+                        render json: @students, status: 200
+                    else
+                        render json: 'Not found', status: 404
+                    end
+                elsif current_user.role=='college' 
+                    ca=CollegeApplication.find(params[:college_application_id])
+                    if ca
+                        if ca.college_id==current_user.college.id
+                            @students=ca.students
+                            render json: @students, status: 200
+                        else
+                            render json: 'Restricted Access', status: 403
+                        end
+                    else
+                        render json: 'Not found', status: 404
+                    end
+                elsif current_user.role=='company'
+                    ca=CollegeApplication.find(params[:college_application_id])
+                    if ca
+                        if ca.company_id==current_user.company.id
+                            @students=ca.students
+                            render json: @students, status: 200
+                        else
+                            render json: 'Restricted Access', status: 403
+                        end
                     else
                         render json: 'Not found', status: 404
                     end
@@ -45,21 +78,27 @@ module Api
 
             def appoint
                     if current_user.role=='company'
-                        @college_application=CollegeApplication.find(params[:college_application_id])
-                        if @college_application
-                            @student=Student.find(params[:student_id])
-                            exist=@student.course.college.college_applications.where(company_id: current_user.company.id)
-                            if exist
-                                if check_student_not_selected(@college_application , @student)==true
-                                    if @college_application.students << @student
-                                        render json: 'Selected Successfully', status: 200
+                        @company=Company.find_by(id: current_user.company.id)
+                        if @company
+                            @company=Company.find_by(id: current_user.company.id) 
+                            @college_application=CollegeApplication.find_by(id: params[:college_application_id])
+                            if @company && @college_application
+                                @student=Student.find(params[:student_id])
+                                exist=@student.course.college.college_applications.where(company_id: current_user.company.id)
+                                if !exist.empty? && @college_application.company.id==current_user.company.id
+                                    if check_student_not_selected(@company , @student)==true
+                                        if @company.students << @student
+                                            render json: 'Selected Successfully', status: 200
+                                        else
+                                            render json: 'Please retry again', status: 422                                    end
                                     else
-                                        render json: 'Please retry again', status: 422                                    end
+                                        render json: 'Already selected', status: 422
+                                    end
                                 else
-                                    render json: 'Already selected', status: 422
+                                    render json: 'Restricted Access', status: 403
                                 end
                             else
-                                render json: 'Restricted Access', status: 403
+                                render json: 'Not found', status: 404
                             end
                         else
                             render json: 'Not found', status: 404
@@ -70,8 +109,8 @@ module Api
                 
             end
         
-            private def check_student_not_selected(college_application, student)
-                if college_application.students.exists?(student.id)==true
+            private def check_student_not_selected(company, student)
+                if company.students.exists?(student.id)==true
                     return false
                 else
                     return true
@@ -123,13 +162,13 @@ module Api
 
             def destroy
 
-                @course=Course.find(params[:course_id])
+                @course=Course.find_by(id: params[:course_id])
                 if current_user.role=='college' && current_user.college.id=@course.college.id
-                    @student=Student.find(params[:id])
+                    @student=Student.find_by(id: params[:id])
                     if @student
                         if @student.course.college.id==current_user.college.id
                             if @student.destroy
-                                render json: 'Deleted Successfully'
+                                render json: 'Deleted Successfully', status: 200
                             else
                                 render json: 'Some error occurred', status: 500
                             end
@@ -147,17 +186,23 @@ module Api
 
             def appointed
                 if current_user.role=='college' 
-                    @college_application=CollegeApplication.find(params[:college_application_id])
-                    if @college_application && @college_application.college.id==current_user.college.id
-                        @students=@college_application.students
+                    @college_application=CollegeApplication.find_by(id: params[:college_application_id])
+                    @company=Company.find_by(id: @college_application.company.id)
+                    if @college_application && @company && @college_application.college.id==current_user.college.id
+                        @all_stu=Student.where(course_id: College.find(current_user.college.id).courses).and(@college_application.students)
+                        @students=@company.students
+                        @students=@students.where(id: @all_stu)
                         render json: @students, status: 200
                     else
                         render json: 'Restricted Access', status: 403
                     end
                 elsif current_user.role=='company'
-                    @college_application=CollegeApplication.find(params[:college_application_id])
+                    @college_application=CollegeApplication.find_by(id: params[:college_application_id])
                     if @college_application && @college_application.company.id==current_user.company.id
-                        @students=@college_application.students
+                        @all_stu=@college_application.students
+                        @company=Company.find_by(id: current_user.company.id)
+                        @students=@company.students
+                        @students=@students.where(id: @all_stu)
                         render json: @students, status: 200
                     else
                         render json: 'Restricted Access', status: 403

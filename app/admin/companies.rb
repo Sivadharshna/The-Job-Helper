@@ -24,6 +24,19 @@ index do
     actions 
 end
 
+form do |f|
+  f.inputs do
+    f.input :user, as: :select, collection: User.all.map{|u| [u.email, u.id]}
+    f.input :name
+    f.input :address
+    f.input :contact_no
+    f.input :website_link
+    f.input :email_id
+  end
+  f.actions
+end
+
+
 filter :name
 filter :address
 filter :email_id

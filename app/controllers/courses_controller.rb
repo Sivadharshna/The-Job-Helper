@@ -2,6 +2,15 @@ class CoursesController < ApplicationController
 
     before_action :authenticate_user!
     before_action :check_user
+
+    before_action :check_permission
+
+    def check_permission
+        if current_user.role!='individual' && current_user.role!='college' && current_user.permission.status!='Permitted' 
+            flash[:notice]='You need admins permssion to access'
+            redirect_to root_path
+        end
+    end
     
     def check_user
         if current_user.present? && current_user.role!='college'
@@ -23,7 +32,7 @@ class CoursesController < ApplicationController
         @course.college_id=current_user.college.id
         if @course.save
             flash[:notice]='Saved Successfully!'
-            redirect_to root_path
+            redirect_to college_courses_url
         else
             if @course.errors.any? 
                 @course.errors.full_messages.each do |message|
@@ -90,6 +99,7 @@ class CoursesController < ApplicationController
             end
         else
             flash[:notice]='Course not found'
+            redirect_to college_courses_url
         end
 
     end

@@ -18,7 +18,7 @@
                     <% count=0 %>
                     <% @students.each  do |student| %>
                         <tr>
-                            <% count+=1%>
+                            <% count+=1%> 
                             <td> <%=count %> </td>
                             <td><%= student.name %></td>
                             <td><%= student.course.name %></td>
@@ -30,13 +30,15 @@
                         
                             <% if current_user.role == 'college' %>
                                 <td><%= student.placement_status %></td>
-                                <td><p> <%= button_to "Select", '/companies/'+params[:company_id].to_s+'/students/'+student.id.to_s+'/select_students' , method: :post %>   </p> </td>
+                                <td><p> <%= button_to "Select", '/college_applications/'+params[:college_application_id].to_s+'/students/'+student.id.to_s+'/select_students' , method: :post %>   </p> </td>
                             <% end %>
                         </tr>
                     <% end %>
                 </div>
             </table>
+            <%= button_to "Complete", '/companies', class: 'btn btn-primary' , method: :get %>
         <% else %>
             <h4> No students found! Try adding some </h4>
+            <%= button_to "Complete", '/companies', class: 'btn btn-primary' , method: :get %>
         <% end %>
         </div>

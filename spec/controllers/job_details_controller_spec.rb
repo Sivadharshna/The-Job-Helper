@@ -6,6 +6,9 @@ RSpec.describe JobDetailsController, type: :controller do
     let!(:user1) { create(:user,email: 'company@example.com', role: 'company') }
     let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
 
+
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
     
         describe 'GET #index' do
             context 'check user access' do

@@ -59,10 +59,10 @@
                                             <% end %>
                                             <% if current_user.role=='college'%>
                                                 <h4> <%= a.approval.company.name %> </h4>
-                                                <p id='time'> Schedule: <%= a.schedule %> </p>\
+                                                <p id='time'> Schedule: <%= a.schedule %> </p> 
                                                 <div class='row' >
                                                     <div class='col-md-6'>
-                                                        <%= button_to 'View listed students' , '/college_applications/'+a.approval_id.to_s+'/companies/'+params[:company_id]+'/students/view' , class: 'btn btn-primary pull-left' , method: :get%>
+                                                        <%= button_to 'View listed students' , '/college_applications/'+a.approval_id.to_s+'/companies/'+a.approval.company.id.to_s+'/students/view' , class: 'btn btn-primary pull-left' , method: :get%>
                                                     </div>
                                                     <div class='col-md-6'>
                                                         <%= button_to 'View selected students' , '/college_applications/'+a.approval_id.to_s+'/appoint' , class: 'btn btn-success pull-right' , method: :get%>

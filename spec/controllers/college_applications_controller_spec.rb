@@ -6,6 +6,9 @@ RSpec.describe CollegeApplicationsController, type: :controller do
     let!(:user1) { create(:user,email: 'company@example.com', role: 'company') }
     let!(:user3) { create(:user, email: 'individual@example.com' , role: 'individual')}
 
+    let!(:permission1) { create(:permission, status: 'Permitted' , user: user1 ) }
+    let!(:permission2) { create(:permission, status: 'Permitted' , user: user2 ) }
+
     
         describe 'GET #index' do
             context 'check user access' do
@@ -41,6 +44,8 @@ RSpec.describe CollegeApplicationsController, type: :controller do
                 it "can create an application when the current user's role is college" do
                     college=create(:college, user: user2) 
                     company=create(:company, user: user1) 
+                    course=create(:course, college: college)
+                    student=create(:student, course: course)
                     sign_in user2
                     post :create, params: { company_id: company.id}
                     expect(flash[:notice]).to eq('Applied Successfully !')
