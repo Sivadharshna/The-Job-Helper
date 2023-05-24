@@ -34,10 +34,12 @@ ActiveAdmin.register Permission do
       f.input :status, as: :select, collection: ["Permitted", "Denied"]
     end
     f.actions
-  end
+  end 
 
   config.remove_action_item (:new)
   
   permit_params :status
 
+  filter :user , :as => :select, :collection => User.all.map{|u| [u.email, u.id]}
+  filter :status , :as => :select, :collection => [ 'Permitted' , 'Denied', 'Under progress' ]
 end
